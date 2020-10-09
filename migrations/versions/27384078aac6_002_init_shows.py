@@ -8,7 +8,6 @@ Create Date: 2020-10-09 18:14:51.996057
 import sqlalchemy as sa
 from alembic import op
 
-
 # revision identifiers, used by Alembic.
 revision = "27384078aac6"
 down_revision = "3cc1a4da5daf"
@@ -31,7 +30,7 @@ def upgrade():
             ["venue_id"],
             ["venues.id"],
         ),
-        sa.PrimaryKeyConstraint("artist_id", "venue_id"),
+        sa.PrimaryKeyConstraint("artist_id", "venue_id", "start_time"),
     )
     # ### end Alembic commands ###
 

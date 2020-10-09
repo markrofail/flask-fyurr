@@ -1,5 +1,5 @@
 from src.models import db
-from src.models.shows import shows
+from src.models.shows import Shows
 
 
 class Venue(db.Model):
@@ -16,7 +16,7 @@ class Venue(db.Model):
 
     shows = db.relationship(
         "artists",
-        secondary=shows,
+        secondary=Shows,
         lazy="subquery",
         backref=db.backref("artists", lazy=True),
     )

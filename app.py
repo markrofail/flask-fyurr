@@ -1,6 +1,5 @@
 import logging
-from logging import FileHandler
-from logging import Formatter
+from logging import FileHandler, Formatter
 
 import babel
 import dateutil.parser
@@ -8,9 +7,8 @@ from flask import Flask
 from flask.templating import render_template
 from flask_migrate import Migrate
 from flask_moment import Moment
-from src.controllers import artist_api
-from src.controllers import shows_api
-from src.controllers import venues_api
+
+from src.controllers import artist_api, shows_api, venues_api
 from src.models import db
 
 # ----------------------------------------------------------------------------#
@@ -70,9 +68,9 @@ def server_error(error):
     return render_template("errors/500.html"), 500
 
 
-app.register_blueprint(venues_api)
-app.register_blueprint(shows_api)
-app.register_blueprint(artist_api)
+app.register_blueprint(venues_api, url_prefix="/venues")
+app.register_blueprint(shows_api, url_prefix="/shows")
+app.register_blueprint(artist_api, url_prefix="/artists")
 
 # ----------------------------------------------------------------------------#
 # Filters.

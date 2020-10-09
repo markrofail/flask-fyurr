@@ -12,7 +12,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_DATABASE_URI = (
     "{dialect}://{username}:{password}@{host}:{port}/{db_name}".format(
         dialect="postgresql",
-        username="udacitydemo",
+        username="postgres",
         password="udacitydemo",
         host="localhost",
         port=5432,

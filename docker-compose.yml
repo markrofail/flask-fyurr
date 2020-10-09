@@ -5,7 +5,7 @@ services:
     image: "mdillon/postgis:11-alpine"
     environment:
       - POSTGRES_DB=udacity_project
-      - POSTGRES_USER=udacitydemo
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=udacitydemo
     volumes:
       # persist data even if container shuts down
