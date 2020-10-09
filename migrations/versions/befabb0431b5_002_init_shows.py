@@ -1,15 +1,15 @@
 """002 init shows
 
-Revision ID: 27384078aac6
+Revision ID: befabb0431b5
 Revises: 3cc1a4da5daf
-Create Date: 2020-10-09 18:14:51.996057
+Create Date: 2020-10-09 19:01:41.507501
 
 """
 import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = "27384078aac6"
+revision = "befabb0431b5"
 down_revision = "3cc1a4da5daf"
 branch_labels = None
 depends_on = None

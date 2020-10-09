@@ -15,9 +15,9 @@ class Venue(db.Model):
     facebook_link = db.Column(db.String(120))
 
     shows = db.relationship(
-        "artists",
+        "Artist",
         secondary=Shows,
         lazy="subquery",
-        backref=db.backref("artists", lazy=True),
+        backref=db.backref("venues", lazy=True),
     )
     # TODO: implement any missing fields, as a database migration using Flask-Migrate

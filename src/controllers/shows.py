@@ -9,7 +9,7 @@ shows_api = Blueprint("shows_api", __name__)
 # READ ----------------------------------------------------
 # List
 @shows_api.route("/")
-def shows():
+def shows_list():
     shows = Shows.query.order_by("start_time").all()
     return render_template("pages/shows.html", shows=shows)
 
