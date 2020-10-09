@@ -1,0 +1,17 @@
+# Main dependencies ---------
+Flask==1.1.2
+
+# ORM -----------------------
+Flask-SQLAlchemy==2.4.4
+SQLAlchemy==1.3.19
+
+# DB Mirations --------------
+Flask-Migrate==2.5.3
+alembic==1.4.3
+Flask-Script==2.0.6
+
+# Misc ----------------------
+Babel==2.8.0            # locale
+python-dateutil==2.6.0  # date helpers
+Flask-Moment==0.10.0    # foramatting dates
+Flask-WTF==0.14.3       # forms
