@@ -1,19 +1,21 @@
 from src.models import db
+from src.models.contact_info import ContactInfo
+from src.models.location import City
 
 
 class Artist(db.Model):
     __tablename__ = "artists"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    city = db.Column(db.String(120))
-    state = db.Column(db.String(120))
-    phone = db.Column(db.String(120))
     genres = db.Column(db.String(120))
-    image_link = db.Column(db.String(500))
-    facebook_link = db.Column(db.String(120))
+    name = db.Column(db.String)
 
-    # TODO: implement any missing fields, as a database migration using Flask-Migrate
+    # MANY artist has ONE city
+    city_id = db.Column(db.Integer, db.ForeignKey("cities.id"), nullable=False)
+    city = db.relationship(City, back_populates="artists")
 
-
-# TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
+    # ONE artist has ONE contact info
+    contact_info_id = db.Column(
+        db.Integer, db.ForeignKey("contact_info.id"), nullable=False, unique=True
+    )
+    contact_info = db.relationship(ContactInfo, uselist=False)

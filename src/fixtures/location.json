@@ -1,0 +1,30 @@
+[
+    {
+       "table":"states",
+       "records":[
+          {
+             "id":1,
+             "state":"CA"
+          },
+          {
+             "id":2,
+             "state":"NY"
+          }
+       ]
+    },
+    {
+       "table":"cities",
+       "records":[
+          {
+             "id":1,
+             "name":"San Francisco",
+             "state_id":1
+          },
+          {
+             "id":2,
+             "name":"New York",
+             "state_id":2
+          }
+       ]
+    }
+ ]
