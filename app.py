@@ -6,6 +6,7 @@ import babel
 import dateutil.parser
 from flask import Flask
 from flask.templating import render_template
+from flask_migrate import Migrate
 from flask_moment import Moment
 from src.controllers import artist_api
 from src.controllers import shows_api
@@ -19,8 +20,17 @@ from src.models import db
 
 def create_app():
     app = Flask(__name__)
-    Moment(app)
+
+    # apply configuration
     app.config.from_object("config")
+
+    # initialize extensions
+    migrate = Migrate()
+    moment = Moment()
+
+    # register extensions
+    moment.init_app(app)
+    migrate.init_app(app, db)
     db.init_app(app)
 
     if not app.debug:
