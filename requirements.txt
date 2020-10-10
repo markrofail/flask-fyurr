@@ -10,8 +10,12 @@ Flask-Migrate==2.5.3
 alembic==1.4.3
 Flask-Script==2.0.6
 
+# Forms ----------------------
+Flask-WTF==0.14.3
+WTForms==2.3.3
+WTForms-Alchemy==0.17.0
+
 # Misc ----------------------
 Babel==2.8.0            # locale
 python-dateutil==2.6.0  # date helpers
 Flask-Moment==0.10.0    # foramatting dates
-Flask-WTF==0.14.3       # forms

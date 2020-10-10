@@ -1,15 +1,25 @@
 from datetime import datetime
 
-from flask_wtf import Form
-from wtforms import DateTimeField
-from wtforms import SelectField
-from wtforms import SelectMultipleField
-from wtforms import StringField
-from wtforms.validators import DataRequired
-from wtforms.validators import URL
+from flask_wtf import FlaskForm
+from wtforms import DateTimeField, StringField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
+from wtforms.validators import URL, DataRequired
+from wtforms_alchemy import PhoneNumberField
+
+from src.models import db
+from src.models.genres import Genres
+from src.models.location import State
 
 
-class ShowForm(Form):
+def state_choices():
+    return db.session.query(State).all()
+
+
+def genre_choices():
+    return db.session.query(Genres).all()
+
+
+class ShowForm(FlaskForm):
     artist_id = StringField("artist_id")
     venue_id = StringField("venue_id")
     start_time = DateTimeField(
@@ -17,188 +27,43 @@ class ShowForm(Form):
     )
 
 
-class VenueForm(Form):
+class VenueForm(FlaskForm):
     name = StringField("name", validators=[DataRequired()])
     city = StringField("city", validators=[DataRequired()])
-    state = SelectField(
+    state = QuerySelectField(
         "state",
         validators=[DataRequired()],
-        choices=[
-            ("AL", "AL"),
-            ("AK", "AK"),
-            ("AZ", "AZ"),
-            ("AR", "AR"),
-            ("CA", "CA"),
-            ("CO", "CO"),
-            ("CT", "CT"),
-            ("DE", "DE"),
-            ("DC", "DC"),
-            ("FL", "FL"),
-            ("GA", "GA"),
-            ("HI", "HI"),
-            ("ID", "ID"),
-            ("IL", "IL"),
-            ("IN", "IN"),
-            ("IA", "IA"),
-            ("KS", "KS"),
-            ("KY", "KY"),
-            ("LA", "LA"),
-            ("ME", "ME"),
-            ("MT", "MT"),
-            ("NE", "NE"),
-            ("NV", "NV"),
-            ("NH", "NH"),
-            ("NJ", "NJ"),
-            ("NM", "NM"),
-            ("NY", "NY"),
-            ("NC", "NC"),
-            ("ND", "ND"),
-            ("OH", "OH"),
-            ("OK", "OK"),
-            ("OR", "OR"),
-            ("MD", "MD"),
-            ("MA", "MA"),
-            ("MI", "MI"),
-            ("MN", "MN"),
-            ("MS", "MS"),
-            ("MO", "MO"),
-            ("PA", "PA"),
-            ("RI", "RI"),
-            ("SC", "SC"),
-            ("SD", "SD"),
-            ("TN", "TN"),
-            ("TX", "TX"),
-            ("UT", "UT"),
-            ("VT", "VT"),
-            ("VA", "VA"),
-            ("WA", "WA"),
-            ("WV", "WV"),
-            ("WI", "WI"),
-            ("WY", "WY"),
-        ],
+        query_factory=state_choices,
+        get_label="name",
     )
     address = StringField("address", validators=[DataRequired()])
-    phone = StringField("phone")
+    phone = PhoneNumberField("phone", display_format="national")
     image_link = StringField("image_link")
-    genres = SelectMultipleField(
-        # TODO implement enum restriction
+    genres = QuerySelectMultipleField(
         "genres",
         validators=[DataRequired()],
-        choices=[
-            ("Alternative", "Alternative"),
-            ("Blues", "Blues"),
-            ("Classical", "Classical"),
-            ("Country", "Country"),
-            ("Electronic", "Electronic"),
-            ("Folk", "Folk"),
-            ("Funk", "Funk"),
-            ("Hip-Hop", "Hip-Hop"),
-            ("Heavy Metal", "Heavy Metal"),
-            ("Instrumental", "Instrumental"),
-            ("Jazz", "Jazz"),
-            ("Musical Theatre", "Musical Theatre"),
-            ("Pop", "Pop"),
-            ("Punk", "Punk"),
-            ("R&B", "R&B"),
-            ("Reggae", "Reggae"),
-            ("Rock n Roll", "Rock n Roll"),
-            ("Soul", "Soul"),
-            ("Other", "Other"),
-        ],
+        query_factory=genre_choices,
+        get_label="name",
     )
     facebook_link = StringField("facebook_link", validators=[URL()])
 
 
-class ArtistForm(Form):
+class ArtistForm(FlaskForm):
     name = StringField("name", validators=[DataRequired()])
     city = StringField("city", validators=[DataRequired()])
-    state = SelectField(
+    state = QuerySelectField(
         "state",
         validators=[DataRequired()],
-        choices=[
-            ("AL", "AL"),
-            ("AK", "AK"),
-            ("AZ", "AZ"),
-            ("AR", "AR"),
-            ("CA", "CA"),
-            ("CO", "CO"),
-            ("CT", "CT"),
-            ("DE", "DE"),
-            ("DC", "DC"),
-            ("FL", "FL"),
-            ("GA", "GA"),
-            ("HI", "HI"),
-            ("ID", "ID"),
-            ("IL", "IL"),
-            ("IN", "IN"),
-            ("IA", "IA"),
-            ("KS", "KS"),
-            ("KY", "KY"),
-            ("LA", "LA"),
-            ("ME", "ME"),
-            ("MT", "MT"),
-            ("NE", "NE"),
-            ("NV", "NV"),
-            ("NH", "NH"),
-            ("NJ", "NJ"),
-            ("NM", "NM"),
-            ("NY", "NY"),
-            ("NC", "NC"),
-            ("ND", "ND"),
-            ("OH", "OH"),
-            ("OK", "OK"),
-            ("OR", "OR"),
-            ("MD", "MD"),
-            ("MA", "MA"),
-            ("MI", "MI"),
-            ("MN", "MN"),
-            ("MS", "MS"),
-            ("MO", "MO"),
-            ("PA", "PA"),
-            ("RI", "RI"),
-            ("SC", "SC"),
-            ("SD", "SD"),
-            ("TN", "TN"),
-            ("TX", "TX"),
-            ("UT", "UT"),
-            ("VT", "VT"),
-            ("VA", "VA"),
-            ("WA", "WA"),
-            ("WV", "WV"),
-            ("WI", "WI"),
-            ("WY", "WY"),
-        ],
+        query_factory=state_choices,
+        get_label="name",
     )
-    phone = StringField(
-        # TODO implement validation logic for state
-        "phone"
-    )
+    phone = PhoneNumberField("phone", display_format="national")
     image_link = StringField("image_link")
-    genres = SelectMultipleField(
-        # TODO implement enum restriction
+    genres = QuerySelectMultipleField(
         "genres",
         validators=[DataRequired()],
-        choices=[
-            ("Alternative", "Alternative"),
-            ("Blues", "Blues"),
-            ("Classical", "Classical"),
-            ("Country", "Country"),
-            ("Electronic", "Electronic"),
-            ("Folk", "Folk"),
-            ("Funk", "Funk"),
-            ("Hip-Hop", "Hip-Hop"),
-            ("Heavy Metal", "Heavy Metal"),
-            ("Instrumental", "Instrumental"),
-            ("Jazz", "Jazz"),
-            ("Musical Theatre", "Musical Theatre"),
-            ("Pop", "Pop"),
-            ("Punk", "Punk"),
-            ("R&B", "R&B"),
-            ("Reggae", "Reggae"),
-            ("Rock n Roll", "Rock n Roll"),
-            ("Soul", "Soul"),
-            ("Other", "Other"),
-        ],
+        query_factory=genre_choices,
+        get_label="name",
     )
     facebook_link = StringField(
         # TODO implement enum restriction
