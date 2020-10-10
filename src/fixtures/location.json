@@ -4,11 +4,11 @@
        "records":[
           {
              "id":1,
-             "state":"CA"
+             "name":"CA"
           },
           {
              "id":2,
-             "state":"NY"
+             "name":"NY"
           }
        ]
     },

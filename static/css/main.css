@@ -103,24 +103,48 @@ ul.items {
 }
 ul.items > li > a {
   margin-bottom: 15px;
-  display: flex;
   color: initial;
   text-decoration: initial;
 }
 ul.items > li > a > i {
   padding: 7px 10px 0;
 }
-ul.items > li:hover {
+ul.items > li a :hover {
   color: orange;
   cursor: pointer;
 }
-ul.items > li:hover h5 {
+ul.items > li a :hover h5 {
   color: orange;
 }
 .item {
   padding: 5px 5px 5px;
-  flex: 1;
+  margin-right: 10%;
 }
+
+.venue-list-wrapper {
+  white-space: nowrap;
+  width: 40%;
+  margin: 1em;
+}
+.venue-list-wrapper * {
+  display: inline;
+ }
+
+.venue-list-delete {
+  float: right;
+  border-radius: 16px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  outline:none;
+  border: none;
+  font-size: 0.8em;
+  padding: 0.25em 2em;
+  margin: 4px 2px;
+}
+.venue-list-delete:focus,
+.venue-list-delete:active {
+  outline: 0 !important;
+}
+
 .item h5 {
   margin-top: 0;
   margin-bottom: 5px;

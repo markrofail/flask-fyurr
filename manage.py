@@ -13,14 +13,17 @@ logger = logging.getLogger(__name__)
 manager = Manager(create_app)
 
 
-@manager.command
-def seed():
-    fixtures = ["location.json", "artists.json", "venues.json", "shows.json"]
+def loan_fixtures(fixtures):
     for fixture in fixtures:
-        try:
-            load_fixtures_from_file(db=db, fixture_filename=f"src/fixtures/{fixture}")
-        except IntegrityError as e:
-            logger.error(e)
+        load_fixtures_from_file(db=db, fixture_filename=f"src/fixtures/{fixture}.json")
+
+
+@manager.option(dest="fixture")
+def load_db(fixture):
+    if fixture == "all":
+        loan_fixtures(["location", "artists", "venues", "shows"])
+    else:
+        loan_fixtures([fixture])
 
 
 manager.add_command("db", MigrateCommand)

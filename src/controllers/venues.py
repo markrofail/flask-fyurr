@@ -1,9 +1,14 @@
-from flask import flash, redirect, render_template, request, url_for
+import logging
+
+from flask import abort, flash, jsonify, redirect, render_template, request, url_for
 from flask.blueprints import Blueprint
+from sqlalchemy.exc import IntegrityError
 
 from src.forms import VenueForm
+from src.models import db
 from src.models.venues import Venue
 
+logger = logging.getLogger(__name__)
 venues_api = Blueprint("venues_api", __name__)
 
 
@@ -115,9 +120,19 @@ def create_venue_submission():
 #  DELETE -------------------------------------------------
 @venues_api.route("/<venue_id>", methods=["DELETE"])
 def delete_venue(venue_id):
-    # TODO: Complete this endpoint for taking a venue_id, and using
-    # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
-
-    # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
-    # clicking that button delete it from the db then redirect the user to the homepage
+    error = False
+    try:
+        venue = Venue.query.get(venue_id)
+        db.session.delete(venue)
+        db.session.commit()
+    except IntegrityError as e:
+        logger.error(e)
+        db.session.rollback()
+        error = True
+    finally:
+        db.session.close()
+    if error:
+        abort(500)
+    else:
+        return jsonify({"success": True})
     return None
