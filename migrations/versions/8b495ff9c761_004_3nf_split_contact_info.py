@@ -23,8 +23,8 @@ def upgrade():
         "contact_info",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("phone", sa.String(), nullable=False),
-        sa.Column("website", sa.String(), nullable=True),
         sa.Column("image_link", sa.String(), nullable=False),
+        sa.Column("website", sa.String(), nullable=True),
         sa.Column("facebook_link", sa.String(), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )

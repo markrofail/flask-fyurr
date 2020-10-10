@@ -15,16 +15,16 @@
 			{% endfor %}
 		</div>
 		<p>
-			<i class="fas fa-globe-americas"></i> {{ artist.city }}, {{ artist.state }}
+			<i class="fas fa-globe-americas"></i> {{ artist.city.name }}, {{ artist.city.state.name }}
 		</p>
 		<p>
-			<i class="fas fa-phone-alt"></i> {% if artist.phone %}{{ artist.phone }}{% else %}No Phone{% endif %}
+			<i class="fas fa-phone-alt"></i> {% if artist.contact_info.phone %}{{ artist.contact_info.phone }}{% else %}No Phone{% endif %}
         </p>
         <p>
-			<i class="fas fa-link"></i> {% if artist.website %}<a href="{{ artist.website }}" target="_blank">{{ artist.website }}</a>{% else %}No Website{% endif %}
+			<i class="fas fa-link"></i> {% if artist.contact_info.website %}<a href="{{ artist.contact_info.website }}" target="_blank">{{ artist.contact_info.website }}</a>{% else %}No Website{% endif %}
 		</p>
 		<p>
-			<i class="fab fa-facebook-f"></i> {% if artist.facebook_link %}<a href="{{ artist.facebook_link }}" target="_blank">{{ artist.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
+			<i class="fab fa-facebook-f"></i> {% if artist.contact_info.facebook_link %}<a href="{{ artist.contact_info.facebook_link }}" target="_blank">{{ artist.contact_info.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
         </p>
 		{% if artist.seeking_venue %}
 		<div class="seeking">
@@ -40,7 +40,7 @@
 		{% endif %}
 	</div>
 	<div class="col-sm-6">
-		<img src="{{ artist.image_link }}" alt="Venue Image" />
+		<img src="{{ artist.contact_info.image_link }}" alt="Artist Image" />
 	</div>
 </div>
 <section>

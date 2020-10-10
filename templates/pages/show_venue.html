@@ -15,19 +15,19 @@
 			{% endfor %}
 		</div>
 		<p>
-			<i class="fas fa-globe-americas"></i> {{ venue.city }}, {{ venue.state }}
+			<i class="fas fa-globe-americas"></i> {{ venue.city.name }}, {{ venue.city.state.name }}
 		</p>
 		<p>
 			<i class="fas fa-map-marker"></i> {% if venue.address %}{{ venue.address }}{% else %}No Address{% endif %}
 		</p>
 		<p>
-			<i class="fas fa-phone-alt"></i> {% if venue.phone %}{{ venue.phone }}{% else %}No Phone{% endif %}
+			<i class="fas fa-phone-alt"></i> {% if venue.contact_info.phone %}{{ venue.contact_info.phone }}{% else %}No Phone{% endif %}
 		</p>
 		<p>
-			<i class="fas fa-link"></i> {% if venue.website %}<a href="{{ venue.website }}" target="_blank">{{ venue.website }}</a>{% else %}No Website{% endif %}
+			<i class="fas fa-link"></i> {% if venue.contact_info.website %}<a href="{{ venue.contact_info.website }}" target="_blank">{{ venue.contact_info.website }}</a>{% else %}No Website{% endif %}
 		</p>
 		<p>
-			<i class="fab fa-facebook-f"></i> {% if venue.facebook_link %}<a href="{{ venue.facebook_link }}" target="_blank">{{ venue.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
+			<i class="fab fa-facebook-f"></i> {% if venue.contact_info.facebook_link %}<a href="{{ venue.facebook_link }}" target="_blank">{{ venue.contact_info.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
 		</p>
 		{% if venue.seeking_talent %}
 		<div class="seeking">
@@ -43,7 +43,7 @@
 		{% endif %}
 	</div>
 	<div class="col-sm-6">
-		<img src="{{ venue.image_link }}" alt="Venue Image" />
+		<img src="{{ venue.contact_info.image_link }}" alt="Venue Image" />
 	</div>
 </div>
 <section>
