@@ -9,6 +9,9 @@ class State(db.Model):
     # ONE state has MANY cities
     cities = db.relationship("City")
 
+    def __repr__(self):
+        return f"<State name:{self.name}>"
+
 
 class City(db.Model):
     __tablename__ = "cities"
@@ -17,10 +20,13 @@ class City(db.Model):
 
     # MANY city have ONE state
     state_id = db.Column(db.Integer, db.ForeignKey("states.id"))
-    state = db.relationship(State, back_populates="cities")
+    state = db.relationship("State", back_populates="cities", lazy="joined")
 
     # ONE city has MANY venues
     venues = db.relationship("Venue")
 
     # ONE city has MANY artists
     artists = db.relationship("Artist")
+
+    def __repr__(self):
+        return f"<City name:{self.name} state:{self.state}>"

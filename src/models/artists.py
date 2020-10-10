@@ -1,6 +1,7 @@
 from src.models import db
 from src.models.contact_info import ContactInfo
 from src.models.location import City
+from src.models.shows import Show
 
 
 class Artist(db.Model):
@@ -21,4 +22,12 @@ class Artist(db.Model):
     contact_info_id = db.Column(
         db.Integer, db.ForeignKey("contact_info.id"), nullable=False, unique=True
     )
-    contact_info = db.relationship(ContactInfo, uselist=False)
+    contact_info = db.relationship(
+        ContactInfo, uselist=False, cascade="all, delete-orphan", single_parent=True
+    )
+
+    # ONE artist has MANY shows
+    shows = db.relationship(Show, back_populates="artist", cascade="all, delete-orphan")
+
+    def __repr__(self):
+        return f"<Artist name:{self.name}>"

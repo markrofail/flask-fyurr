@@ -1,8 +1,17 @@
 from src.models import db
 
-Shows = db.Table(
-    "shows",
-    db.Column("artist_id", db.Integer, db.ForeignKey("artists.id"), primary_key=True),
-    db.Column("venue_id", db.Integer, db.ForeignKey("venues.id"), primary_key=True),
-    db.Column("start_time", db.DateTime, primary_key=True),
-)
+
+class Show(db.Model):
+    __tablename__ = "shows"
+
+    id = db.Column(db.Integer, primary_key=True)
+    start_time = db.Column(db.DateTime, nullable=False)
+
+    artist_id = db.Column(db.Integer, db.ForeignKey("artists.id"), nullable=False)
+    artist = db.relationship("Artist", back_populates="shows")
+
+    venue_id = db.Column(db.Integer, db.ForeignKey("venues.id"), nullable=False)
+    venue = db.relationship("Venue", back_populates="shows")
+
+    def __repr__(self):
+        return f"<Show id:{self.id} start_time:{self.start_time}>"

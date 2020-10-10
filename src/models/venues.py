@@ -1,7 +1,7 @@
 from src.models import db
 from src.models.contact_info import ContactInfo
 from src.models.location import City
-from src.models.shows import Shows
+from src.models.shows import Show
 
 
 class Venue(db.Model):
@@ -22,12 +22,12 @@ class Venue(db.Model):
     contact_info_id = db.Column(
         db.Integer, db.ForeignKey("contact_info.id"), nullable=False, unique=True
     )
-    contact_info = db.relationship(ContactInfo, uselist=False)
-
-    # MANY artists have MANY venues
-    shows = db.relationship(
-        "Artist",
-        secondary=Shows,
-        lazy="subquery",
-        backref=db.backref("venues", lazy=True),
+    contact_info = db.relationship(
+        ContactInfo, uselist=False, cascade="all, delete-orphan", single_parent=True
     )
+
+    # ONE venue has MANY shows
+    shows = db.relationship(Show, back_populates="venue", cascade="all, delete-orphan")
+
+    def __repr__(self):
+        return f"<Venue name:{self.name}>"
