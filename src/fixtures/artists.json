@@ -61,6 +61,7 @@
             "city_id":2,
             "contact_info_id":2,
             "seeking_venue":false,
+            "seeking_description": null,
             "past_shows":[
                {
                   "venue_id":3,
@@ -85,6 +86,7 @@
             "city_id":1,
             "contact_info_id":3,
             "seeking_venue":false,
+            "seeking_description": null,
             "past_shows":[
 
             ],

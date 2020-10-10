@@ -10,6 +10,9 @@ class Artist(db.Model):
     genres = db.Column(db.String(120))
     name = db.Column(db.String)
 
+    seeking_venue = db.Column(db.Boolean, nullable=False, default=False)
+    seeking_description = db.Column(db.String, nullable=True)
+
     # MANY artist has ONE city
     city_id = db.Column(db.Integer, db.ForeignKey("cities.id"), nullable=False)
     city = db.relationship(City, back_populates="artists")

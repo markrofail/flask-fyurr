@@ -69,6 +69,7 @@
              "city_id":2,
              "contact_info_id":5,
              "seeking_talent":false,
+             "seeking_description": null,
              "past_shows":[
 
              ],
@@ -91,6 +92,7 @@
              "city_id":2,
              "contact_info_id":6,
              "seeking_talent":false,
+             "seeking_description": null,
              "past_shows":[
                 {
                    "artist_id":5,
