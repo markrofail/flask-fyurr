@@ -3,7 +3,6 @@ import logging
 from flask_fixtures import load_fixtures_from_file
 from flask_migrate import MigrateCommand
 from flask_script import Manager
-from sqlalchemy.exc import IntegrityError
 
 from app import create_app
 from src.models import db
@@ -21,7 +20,7 @@ def loan_fixtures(fixtures):
 @manager.option(dest="fixture")
 def load_db(fixture):
     if fixture == "all":
-        loan_fixtures(["location", "artists", "venues", "shows"])
+        loan_fixtures(["location", "genres", "artists", "venues", "shows"])
     else:
         loan_fixtures([fixture])
 

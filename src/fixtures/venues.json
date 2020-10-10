@@ -1,129 +1,164 @@
 [
-    {
-       "table":"contact_info",
-       "records":[
-          {
-             "id":4,
-             "phone":"123-123-1234",
-             "website":"https://www.themusicalhop.com",
-             "facebook_link":"https://www.facebook.com/TheMusicalHop",
-             "image_link":"https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"
-          },
-          {
-             "id":5,
-             "phone":"914-003-1132",
-             "website":"https://www.theduelingpianos.com",
-             "facebook_link":"https://www.facebook.com/theduelingpianos",
-             "image_link":"https://images.unsplash.com/photo-1497032205916-ac775f0649ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
-          },
-          {
-             "id":6,
-             "phone":"415-000-1234",
-             "website":"https://www.parksquarelivemusicandcoffee.com",
-             "facebook_link":"https://www.facebook.com/ParkSquareLiveMusicAndCoffee",
-             "image_link":"https://images.unsplash.com/photo-1485686531765-ba63b07845a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=747&q=80"
-          }
-       ]
-    },
-    {
-       "table":"venues",
-       "records":[
-          {
-             "id":1,
-             "name":"The Musical Hop",
-             "genres":[
-                "Jazz",
-                "Reggae",
-                "Swing",
-                "Classical",
-                "Folk"
-             ],
-             "address":"1015 Folsom Street",
-             "city_id":1,
-             "contact_info_id":4,
-             "seeking_talent":true,
-             "seeking_description":"We are on the lookout for a local artist to play every two weeks. Please call us.",
-             "past_shows":[
-                {
-                   "artist_id":4,
-                   "artist_name":"Guns N Petals",
-                   "artist_image_link":"https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
-                   "start_time":"2019-05-21T21:30:00.000Z"
-                }
-             ],
-             "upcoming_shows":[
+   {
+      "table":"contact_info",
+      "records":[
+         {
+            "id":4,
+            "phone":"123-123-1234",
+            "website":"https://www.themusicalhop.com",
+            "facebook_link":"https://www.facebook.com/TheMusicalHop",
+            "image_link":"https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"
+         },
+         {
+            "id":5,
+            "phone":"914-003-1132",
+            "website":"https://www.theduelingpianos.com",
+            "facebook_link":"https://www.facebook.com/theduelingpianos",
+            "image_link":"https://images.unsplash.com/photo-1497032205916-ac775f0649ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
+         },
+         {
+            "id":6,
+            "phone":"415-000-1234",
+            "website":"https://www.parksquarelivemusicandcoffee.com",
+            "facebook_link":"https://www.facebook.com/ParkSquareLiveMusicAndCoffee",
+            "image_link":"https://images.unsplash.com/photo-1485686531765-ba63b07845a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=747&q=80"
+         }
+      ]
+   },
+   {
+      "table":"venues",
+      "records":[
+         {
+            "id":1,
+            "name":"The Musical Hop",
+            "address":"1015 Folsom Street",
+            "city_id":1,
+            "contact_info_id":4,
+            "seeking_talent":true,
+            "seeking_description":"We are on the lookout for a local artist to play every two weeks. Please call us.",
+            "past_shows":[
+               {
+                  "artist_id":4,
+                  "artist_name":"Guns N Petals",
+                  "artist_image_link":"https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
+                  "start_time":"2019-05-21T21:30:00.000Z"
+               }
+            ],
+            "upcoming_shows":[
 
-             ],
-             "past_shows_count":1,
-             "upcoming_shows_count":0
-          },
-          {
-             "id":2,
-             "name":"The Dueling Pianos Bar",
-             "genres":[
-                "Classical",
-                "R&B",
-                "Hip-Hop"
-             ],
-             "address":"335 Delancey Street",
-             "city_id":2,
-             "contact_info_id":5,
-             "seeking_talent":false,
-             "seeking_description": null,
-             "past_shows":[
+            ],
+            "past_shows_count":1,
+            "upcoming_shows_count":0
+         },
+         {
+            "id":2,
+            "name":"The Dueling Pianos Bar",
+            "address":"335 Delancey Street",
+            "city_id":2,
+            "contact_info_id":5,
+            "seeking_talent":false,
+            "seeking_description":null,
+            "past_shows":[
 
-             ],
-             "upcoming_shows":[
+            ],
+            "upcoming_shows":[
 
-             ],
-             "past_shows_count":0,
-             "upcoming_shows_count":0
-          },
-          {
-             "id":3,
-             "name":"Park Square Live Music & Coffee",
-             "genres":[
-                "Rock n Roll",
-                "Jazz",
-                "Classical",
-                "Folk"
-             ],
-             "address":"34 Whiskey Moore Ave",
-             "city_id":2,
-             "contact_info_id":6,
-             "seeking_talent":false,
-             "seeking_description": null,
-             "past_shows":[
-                {
-                   "artist_id":5,
-                   "artist_name":"Matt Quevedo",
-                   "artist_image_link":"https://images.unsplash.com/photo-1495223153807-b916f75de8c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
-                   "start_time":"2019-06-15T23:00:00.000Z"
-                }
-             ],
-             "upcoming_shows":[
-                {
-                   "artist_id":6,
-                   "artist_name":"The Wild Sax Band",
-                   "artist_image_link":"https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-                   "start_time":"2035-04-01T20:00:00.000Z"
-                },
-                {
-                   "artist_id":6,
-                   "artist_name":"The Wild Sax Band",
-                   "artist_image_link":"https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-                   "start_time":"2035-04-08T20:00:00.000Z"
-                },
-                {
-                   "artist_id":6,
-                   "artist_name":"The Wild Sax Band",
-                   "artist_image_link":"https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-                   "start_time":"2035-04-15T20:00:00.000Z"
-                }
-             ],
-             "past_shows_count":1,
-             "upcoming_shows_count":1
-          }
-       ]
-    }
- ]
+            ],
+            "past_shows_count":0,
+            "upcoming_shows_count":0
+         },
+         {
+            "id":3,
+            "name":"Park Square Live Music & Coffee",
+            "address":"34 Whiskey Moore Ave",
+            "city_id":2,
+            "contact_info_id":6,
+            "seeking_talent":false,
+            "seeking_description":null,
+            "past_shows":[
+               {
+                  "artist_id":5,
+                  "artist_name":"Matt Quevedo",
+                  "artist_image_link":"https://images.unsplash.com/photo-1495223153807-b916f75de8c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
+                  "start_time":"2019-06-15T23:00:00.000Z"
+               }
+            ],
+            "upcoming_shows":[
+               {
+                  "artist_id":6,
+                  "artist_name":"The Wild Sax Band",
+                  "artist_image_link":"https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
+                  "start_time":"2035-04-01T20:00:00.000Z"
+               },
+               {
+                  "artist_id":6,
+                  "artist_name":"The Wild Sax Band",
+                  "artist_image_link":"https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
+                  "start_time":"2035-04-08T20:00:00.000Z"
+               },
+               {
+                  "artist_id":6,
+                  "artist_name":"The Wild Sax Band",
+                  "artist_image_link":"https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
+                  "start_time":"2035-04-15T20:00:00.000Z"
+               }
+            ],
+            "past_shows_count":1,
+            "upcoming_shows_count":1
+         }
+      ]
+   },
+   {
+      "table":"genre_venue_assoc",
+      "records":[
+         {
+            "venue_id":1,
+            "genre_id":11
+         },
+         {
+            "venue_id":1,
+            "genre_id":16
+         },
+         {
+            "venue_id":1,
+            "genre_id":19
+         },
+         {
+            "venue_id":1,
+            "genre_id":3
+         },
+         {
+            "venue_id":1,
+            "genre_id":6
+         },
+         {
+            "venue_id":2,
+            "genre_id":3
+         },
+         {
+            "venue_id":2,
+            "genre_id":15
+         },
+         {
+            "venue_id":2,
+            "genre_id":8
+         },
+         {
+            "venue_id":3,
+            "genre_id":17
+         },
+         {
+            "venue_id":3,
+            "genre_id":11
+         },
+         {
+            "venue_id":3,
+            "genre_id":3
+         },
+         {
+            "venue_id":3,
+            "genre_id":6
+         }
+      ]
+   }
+]

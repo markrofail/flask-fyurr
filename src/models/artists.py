@@ -1,5 +1,6 @@
 from src.models import db
 from src.models.contact_info import ContactInfo
+from src.models.genres import Genres, genre_artist_assoc
 from src.models.location import City
 from src.models.shows import Show
 
@@ -8,8 +9,9 @@ class Artist(db.Model):
     __tablename__ = "artists"
 
     id = db.Column(db.Integer, primary_key=True)
-    genres = db.Column(db.String(120))
     name = db.Column(db.String)
+
+    genres = db.relationship(Genres, secondary=genre_artist_assoc)
 
     seeking_venue = db.Column(db.Boolean, nullable=False, default=False)
     seeking_description = db.Column(db.String, nullable=True)

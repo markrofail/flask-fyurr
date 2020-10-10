@@ -1,5 +1,6 @@
 from src.models import db
 from src.models.contact_info import ContactInfo
+from src.models.genres import Genres, genre_venue_assoc
 from src.models.location import City
 from src.models.shows import Show
 
@@ -10,6 +11,8 @@ class Venue(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     address = db.Column(db.String(120))
+
+    genres = db.relationship(Genres, secondary=genre_venue_assoc)
 
     seeking_talent = db.Column(db.Boolean, nullable=False, default=False)
     seeking_description = db.Column(db.String, nullable=True)
