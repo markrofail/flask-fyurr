@@ -26,7 +26,7 @@ def venues_list():
 # Detail
 @venues_views.route("/<int:venue_id>")
 def venues_detail(venue_id):
-    venue = Venue.query.get(venue_id)
+    venue = Venue.query.get_or_404(venue_id)
     return render_template("pages/show_venue.html", venue=venue)
 
 
@@ -50,8 +50,9 @@ def search_venues():
 # Form GET
 @venues_views.route("/<int:venue_id>/edit", methods=["GET"])
 def edit_venue(venue_id):
-    venue = Venue.query.get(venue_id)
-    return render_template("forms/edit_venue.html", form=VenueForm(), venue=venue)
+    venue = Venue.query.get_or_404(venue_id)
+    form = VenueForm(obj=venue)
+    return render_template("forms/edit_venue.html", form=form, venue=venue)
 
 
 # Form SUBMIT
@@ -88,7 +89,7 @@ def create_venue_submission():
 def delete_venue(venue_id):
     error = False
     try:
-        venue = Venue.query.get(venue_id)
+        venue = Venue.query.get_or_404(venue_id)
         db.session.delete(venue)
         db.session.commit()
     except IntegrityError as e:
@@ -101,4 +102,3 @@ def delete_venue(venue_id):
         abort(500)
     else:
         return jsonify({"success": True})
-    return None

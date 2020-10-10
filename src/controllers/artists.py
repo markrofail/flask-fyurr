@@ -17,7 +17,7 @@ def artists_list():
 # Details
 @artists_views.route("/<int:artist_id>")
 def artists_detail(artist_id):
-    artist = Artist.query.get(artist_id)
+    artist = Artist.query.get_or_404(artist_id)
     return render_template("pages/show_artist.html", artist=artist)
 
 
@@ -41,8 +41,9 @@ def search_artists():
 # Form GET
 @artists_views.route("/<int:artist_id>/edit", methods=["GET"])
 def edit_artist(artist_id):
-    artist = Artist.query.get(artist_id)
-    return render_template("forms/edit_artist.html", form=ArtistForm(), artist=artist)
+    artist = Artist.query.get_or_404(artist_id)
+    form = ArtistForm(obj=artist)
+    return render_template("forms/edit_artist.html", form=form, artist=artist)
 
 
 # Form SUBMIT
@@ -50,7 +51,7 @@ def edit_artist(artist_id):
 def edit_artist_submission(artist_id):
     # TODO: take values from the form submitted, and update existing
     # artist record with ID <artist_id> using the new attributes
-    artist = Artist.query.get(artist_id)
+    artist = Artist.query.get_or_404(artist_id)
     return redirect(url_for("artists.show_artist", artist_id=artist))
 
 
