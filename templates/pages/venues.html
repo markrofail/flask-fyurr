@@ -6,7 +6,7 @@
 <ul class="items">
 	{% for venue in city.venues %}
 	<li class="venue-list-wrapper">
-			<a href="{{url_for('venues_api.venues_detail', venue_id=venue.id)}}">
+			<a href="{{url_for('venues.venues_detail', venue_id=venue.id)}}">
 				<div class="item">
 					<i class="fas fa-music"></i>
 					<h5>{{ venue.name }}</h5>

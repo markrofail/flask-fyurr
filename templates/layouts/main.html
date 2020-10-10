@@ -53,9 +53,9 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li>
-              {% if (request.endpoint == 'venues') or
-                (request.endpoint == 'search_venues') or
-                (request.endpoint == 'show_venue') %}
+              {% if (request.endpoint == 'venues.venues_list') or
+                (request.endpoint == 'venues.search_venues') or
+                (request.endpoint == 'venues.venues_detail') %}
               <form class="search" method="post" action="/venues/search">
                 <input class="form-control"
                   type="search"
@@ -64,9 +64,9 @@
                   aria-label="Search">
               </form>
               {% endif %}
-              {% if (request.endpoint == 'artists') or
-                (request.endpoint == 'search_artists') or
-                (request.endpoint == 'show_artist') %}
+              {% if (request.endpoint == 'artists.artists_list') or
+                (request.endpoint == 'artists.artists_detail') or
+                (request.endpoint == 'artists.search_artists') %}
               <form class="search" method="post" action="/artists/search">
                 <input class="form-control"
                   type="search"
@@ -78,9 +78,9 @@
             </li>
           </ul>
           <ul class="nav navbar-nav">
-            <li {% if request.endpoint == 'venues' %} class="active" {% endif %}><a href="{{ url_for('venues_api.venues_list') }}">Venues</a></li>
-            <li {% if request.endpoint == 'artists' %} class="active" {% endif %}><a href="{{ url_for('artist_api.artists_list') }}">Artists</a></li>
-            <li {% if request.endpoint == 'shows' %} class="active" {% endif %}><a href="{{ url_for('shows_api.shows_list') }}">Shows</a></li>
+            <li {% if request.endpoint == 'venues.venues_list' %} class="active" {% endif %}><a href="{{ url_for('venues.venues_list') }}">Venues</a></li>
+            <li {% if request.endpoint == 'artists.artists_list' %} class="active" {% endif %}><a href="{{ url_for('artists.artists_list') }}">Artists</a></li>
+            <li {% if request.endpoint == 'venues.shows_list' %} class="active" {% endif %}><a href="{{ url_for('shows.shows_list') }}">Shows</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

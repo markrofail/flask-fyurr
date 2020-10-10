@@ -8,7 +8,7 @@ from flask.templating import render_template
 from flask_migrate import Migrate
 from flask_moment import Moment
 
-from src.controllers import artist_api, shows_api, venues_api
+from src.controllers import artists_views, shows_views, venues_views
 from src.models import db
 
 # ----------------------------------------------------------------------------#
@@ -68,9 +68,9 @@ def server_error(error):
     return render_template("errors/500.html"), 500
 
 
-app.register_blueprint(venues_api, url_prefix="/venues")
-app.register_blueprint(shows_api, url_prefix="/shows")
-app.register_blueprint(artist_api, url_prefix="/artists")
+app.register_blueprint(venues_views, url_prefix="/venues")
+app.register_blueprint(shows_views, url_prefix="/shows")
+app.register_blueprint(artists_views, url_prefix="/artists")
 
 # ----------------------------------------------------------------------------#
 # Filters.
@@ -93,4 +93,4 @@ app.jinja_env.filters["datetime"] = format_datetime
 # ----------------------------------------------------------------------------#
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=8080)

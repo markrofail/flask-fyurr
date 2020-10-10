@@ -3,73 +3,66 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from src.forms import ArtistForm
 from src.models.artists import Artist
 
-artist_api = Blueprint("artist_api", __name__)
+artists_views = Blueprint("artists", __name__)
 
 
 # READ ----------------------------------------------------
 # List
-@artist_api.route("/", methods=["GET"])
+@artists_views.route("/", methods=["GET"])
 def artists_list():
     artists = Artist.query.order_by("id").all()
     return render_template("pages/artists.html", artists=artists)
 
 
 # Details
-@artist_api.route("/<int:artist_id>")
+@artists_views.route("/<int:artist_id>")
 def artists_detail(artist_id):
     artist = Artist.query.get(artist_id)
     return render_template("pages/show_artist.html", artist=artist)
 
 
 #  SEARCH -------------------------------------------------
-@artist_api.route("/search", methods=["POST"])
+@artists_views.route("/search", methods=["POST"])
 def search_artists():
-    # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.
-    # seach for "A" should return "Guns N Petals", "Matt Quevado", and "The Wild Sax Band".
-    # search for "band" should return "The Wild Sax Band".
-    response = {
-        "count": 1,
-        "data": [
-            {
-                "id": 4,
-                "name": "Guns N Petals",
-                "num_upcoming_shows": 0,
-            }
-        ],
-    }
+    search_term = request.form.get("search_term", "")
+    artists = Artist.query.filter(Artist.name.ilike(f"%{search_term}%")).all()
+
     return render_template(
         "pages/search_artists.html",
-        results=response,
-        search_term=request.form.get("search_term", ""),
+        results=dict(
+            count=len(artists),
+            data=artists,
+        ),
+        search_term=search_term,
     )
 
 
 #  UPDATE -------------------------------------------------
 # Form GET
-@artist_api.route("/<int:artist_id>/edit", methods=["GET"])
+@artists_views.route("/<int:artist_id>/edit", methods=["GET"])
 def edit_artist(artist_id):
     artist = Artist.query.get(artist_id)
     return render_template("forms/edit_artist.html", form=ArtistForm(), artist=artist)
 
 
 # Form SUBMIT
-@artist_api.route("/<int:artist_id>/edit", methods=["POST"])
+@artists_views.route("/<int:artist_id>/edit", methods=["POST"])
 def edit_artist_submission(artist_id):
     # TODO: take values from the form submitted, and update existing
     # artist record with ID <artist_id> using the new attributes
     artist = Artist.query.get(artist_id)
-    return redirect(url_for("artist_api.show_artist", artist_id=artist))
+    return redirect(url_for("artists.show_artist", artist_id=artist))
 
 
 #  CREATE -------------------------------------------------
 # Form GET
-@artist_api.route("/create", methods=["GET"])
+@artists_views.route("/create", methods=["GET"])
 def create_artist_form():
     return render_template("forms/new_artist.html", form=ArtistForm())
 
 
 # Form SUBMIT
-@artist_api.route("/create", methods=["POST"])
+@artists_views.route("/create", methods=["POST"])
 def create_artist_submission():
     # called upon submitting the new artist listing form
     # TODO: insert form data as a new Venue record in the db, instead

@@ -1,9 +1,9 @@
-from .artists import artist_api
-from .shows import shows_api
-from .venues import venues_api
+from .artists import artists_views
+from .shows import shows_views
+from .venues import venues_views
 
 __all__ = [
-    "artist_api",
-    "shows_api",
-    "venues_api",
+    "artists_views",
+    "shows_views",
+    "venues_views",
 ]
