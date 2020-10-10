@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask_wtf import FlaskForm
-from wtforms import DateTimeField, StringField
+from wtforms import DateTimeField, FormField, StringField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from wtforms.validators import URL, DataRequired
 from wtforms_alchemy import PhoneNumberField
@@ -27,8 +27,17 @@ class ShowForm(FlaskForm):
     )
 
 
+class ContactInfoForm(FlaskForm):
+    phone = PhoneNumberField("phone", display_format="national")
+    image_link = StringField("image_link")
+    website = StringField("website")
+    facebook_link = StringField("facebook_link", validators=[URL()])
+
+
 class VenueForm(FlaskForm):
     name = StringField("name", validators=[DataRequired()])
+    address = StringField("address", validators=[DataRequired()])
+
     city = StringField("city", validators=[DataRequired()])
     state = QuerySelectField(
         "state",
@@ -36,20 +45,20 @@ class VenueForm(FlaskForm):
         query_factory=state_choices,
         get_label="name",
     )
-    address = StringField("address", validators=[DataRequired()])
-    phone = PhoneNumberField("phone", display_format="national")
-    image_link = StringField("image_link")
+
     genres = QuerySelectMultipleField(
         "genres",
         validators=[DataRequired()],
         query_factory=genre_choices,
         get_label="name",
     )
-    facebook_link = StringField("facebook_link", validators=[URL()])
+
+    contact_info = FormField(ContactInfoForm)
 
 
 class ArtistForm(FlaskForm):
     name = StringField("name", validators=[DataRequired()])
+
     city = StringField("city", validators=[DataRequired()])
     state = QuerySelectField(
         "state",
@@ -57,19 +66,12 @@ class ArtistForm(FlaskForm):
         query_factory=state_choices,
         get_label="name",
     )
-    phone = PhoneNumberField("phone", display_format="national")
-    image_link = StringField("image_link")
+
     genres = QuerySelectMultipleField(
         "genres",
         validators=[DataRequired()],
         query_factory=genre_choices,
         get_label="name",
     )
-    facebook_link = StringField(
-        # TODO implement enum restriction
-        "facebook_link",
-        validators=[URL()],
-    )
 
-
-# TODO IMPLEMENT NEW ARTIST FORM AND NEW SHOW FORM
+    contact_info = FormField(ContactInfoForm)
