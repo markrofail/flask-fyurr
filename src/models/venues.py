@@ -1,3 +1,7 @@
+import datetime
+
+from sqlalchemy.ext.hybrid import hybrid_property
+
 from src.models import PkModelMixin, db
 from src.models.contact_info import ContactInfo
 from src.models.genres import Genres, genre_venue_assoc
@@ -33,3 +37,31 @@ class Venue(PkModelMixin, db.Model):
 
     def __repr__(self):
         return f"<Venue name:{self.name}>"
+
+    @hybrid_property
+    def upcoming_shows(self):
+        today = datetime.date.today()
+        return Show.query.filter(
+            Show.venue_id == self.id, Show.start_time >= today
+        ).all()
+
+    @hybrid_property
+    def upcoming_shows_count(self):
+        today = datetime.date.today()
+        return Show.query.filter(
+            Show.venue_id == self.id, Show.start_time >= today
+        ).count()
+
+    @hybrid_property
+    def past_shows(self):
+        today = datetime.date.today()
+        return Show.query.filter(
+            Show.venue_id == self.id, Show.start_time < today
+        ).all()
+
+    @hybrid_property
+    def past_shows_count(self):
+        today = datetime.date.today()
+        return Show.query.filter(
+            Show.venue_id == self.id, Show.start_time < today
+        ).count()
