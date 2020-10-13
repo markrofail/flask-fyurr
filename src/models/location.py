@@ -1,9 +1,8 @@
-from src.models import db
+from src.models import PkModelMixin, db
 
 
-class State(db.Model):
+class State(PkModelMixin, db.Model):
     __tablename__ = "states"
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
     # ONE state has MANY cities
@@ -13,9 +12,8 @@ class State(db.Model):
         return f"<State name:{self.name}>"
 
 
-class City(db.Model):
+class City(PkModelMixin, db.Model):
     __tablename__ = "cities"
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
     # MANY city have ONE state

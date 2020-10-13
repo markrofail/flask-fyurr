@@ -1,9 +1,8 @@
-from src.models import db
+from src.models import PkModelMixin, db
 
 
-class Genres(db.Model):
+class Genres(PkModelMixin, db.Model):
     __tablename__ = "genres"
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
     def __repr__(self):

@@ -1,10 +1,9 @@
-from src.models import db
+from src.models import PkModelMixin, db
 
 
-class Show(db.Model):
+class Show(PkModelMixin, db.Model):
     __tablename__ = "shows"
 
-    id = db.Column(db.Integer, primary_key=True)
     start_time = db.Column(db.DateTime, nullable=False)
 
     artist_id = db.Column(db.Integer, db.ForeignKey("artists.id"), nullable=False)

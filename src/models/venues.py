@@ -1,14 +1,13 @@
-from src.models import db
+from src.models import PkModelMixin, db
 from src.models.contact_info import ContactInfo
 from src.models.genres import Genres, genre_venue_assoc
 from src.models.location import City
 from src.models.shows import Show
 
 
-class Venue(db.Model):
+class Venue(PkModelMixin, db.Model):
     __tablename__ = "venues"
 
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     address = db.Column(db.String(120))
 
