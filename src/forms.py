@@ -3,7 +3,7 @@ from datetime import datetime
 from flask_wtf import FlaskForm
 from wtforms import DateTimeField, FormField, StringField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
-from wtforms.validators import URL, DataRequired
+from wtforms.validators import URL, DataRequired, optional
 from wtforms_alchemy import PhoneNumberField
 
 from src.models import db
@@ -28,10 +28,20 @@ class ShowForm(FlaskForm):
 
 
 class ContactInfoForm(FlaskForm):
-    phone = PhoneNumberField("phone", display_format="national")
+    def validate_facebook(form, field):
+        if field.data:
+            return (
+                field.data.startswith("facebook.com")
+                or field.data.startswith("http://facebook.com")
+                or field.data.startswith("https:/facebook.com")
+            )
+
+    phone = PhoneNumberField("phone", display_format="international", region=None)
     image_link = StringField("image_link")
     website = StringField("website")
-    facebook_link = StringField("facebook_link", validators=[URL()])
+    facebook_link = StringField(
+        "facebook_link", validators=[optional(), URL(), validate_facebook]
+    )
 
 
 class VenueForm(FlaskForm):

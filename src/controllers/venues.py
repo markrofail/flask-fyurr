@@ -6,8 +6,10 @@ from sqlalchemy.exc import IntegrityError
 
 from src.forms import VenueForm
 from src.models import db
+from src.models.contact_info import ContactInfo
 from src.models.location import City
 from src.models.venues import Venue
+from src.utils import flash_error, parse_errors
 
 logger = logging.getLogger(__name__)
 venues_views = Blueprint("venues", __name__)
@@ -17,8 +19,6 @@ venues_views = Blueprint("venues", __name__)
 # List
 @venues_views.route("/")
 def venues_list():
-    # TODO: replace with real venues data.
-    #       num_shows should be aggregated based on number of upcoming shows per venue.
     cities = City.query.filter(City.venues.any()).all()
     return render_template("pages/venues.html", cities=cities)
 
@@ -73,15 +73,64 @@ def create_venue_form():
 # Form SUBMIT
 @venues_views.route("/create", methods=["POST"])
 def create_venue_submission():
-    # TODO: insert form data as a new Venue record in the db, instead
-    # TODO: modify data to be the data object returned from db insertion
+    form = VenueForm(request.form)
+    errors = None
 
-    # on successful db insert, flash success
-    flash("Venue " + request.form["name"] + " was successfully listed!")
-    # TODO: on unsuccessful db insert, flash an error instead.
-    # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
-    # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
-    return render_template("pages/home.html")
+    if not form.validate():
+        errors = parse_errors(form.errors)
+        flash_error(errors)
+        return render_template("forms/new_venue.html", form=form)
+
+    try:
+        # create City object
+        city_name, state = form.city.data, form.state.data
+        city_name = city_name.strip().capitalize()
+
+        # get or create
+        city = City.query.filter_by(name=city_name).one_or_none()
+        if not city:
+            city = City(name=city_name, state=state)
+            db.session.add(city)
+
+        # create Contact Information object
+        contact_info = ContactInfo(
+            phone=form.contact_info.phone.data.international,
+            image_link=form.contact_info.image_link.data,
+            website=form.contact_info.website.data,
+            facebook_link=form.contact_info.facebook_link.data,
+        )
+        db.session.add(contact_info)
+
+        # finally create Venue object
+        genres = form.genres.data
+        address = form.address.data.strip()
+        name = form.name.data.strip()
+
+        venue = Venue(
+            name=name,
+            address=address,
+            genres=genres,
+            city=city,
+            contact_info=contact_info,
+        )
+        db.session.add(venue)
+        db.session.commit()
+
+        flash(f"Venue {name} was successfully listed!")
+    except IntegrityError as e:
+        print(e)
+        db.session.rollback()
+        errors = True
+    finally:
+        db.session.close()
+
+    if errors:
+        form = VenueForm(request.form)
+        flash_error(
+            f"An error occurred. Venue {request.form.get('name', '')} could not be listed"
+        )
+        return render_template("forms/new_venue.html", form=form)
+    return redirect(url_for("index"))
 
 
 #  DELETE -------------------------------------------------

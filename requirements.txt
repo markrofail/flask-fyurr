@@ -14,6 +14,7 @@ Flask-Script==2.0.6
 Flask-WTF==0.14.3
 WTForms==2.3.3
 WTForms-Alchemy==0.17.0
+phonenumbers==8.12.11
 
 # Misc ----------------------
 Babel==2.8.0            # locale
