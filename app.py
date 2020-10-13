@@ -7,6 +7,7 @@ from flask import Flask
 from flask.templating import render_template
 from flask_migrate import Migrate
 from flask_moment import Moment
+from flask_wtf.csrf import CSRFProtect
 
 from src.controllers import artists_views, shows_views, venues_views
 from src.models import db
@@ -25,11 +26,13 @@ def create_app():
     # initialize extensions
     migrate = Migrate()
     moment = Moment()
+    csrf = CSRFProtect()
 
     # register extensions
     moment.init_app(app)
     migrate.init_app(app, db)
     db.init_app(app)
+    csrf.init_app(app)
 
     if not app.debug:
         file_handler = FileHandler("error.log")
