@@ -9,30 +9,22 @@ from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_wtf.csrf import CSRFProtect
 
-from src.controllers import artists_views, shows_views, venues_views
-from src.models import db
+from fyuur.controllers import artists_views, shows_views, venues_views
+from fyuur.models import db
 
 # ----------------------------------------------------------------------------#
 # App Config.
 # ----------------------------------------------------------------------------#
 
 
-def create_app():
+def create_app(config_path="settings:local"):
     app = Flask(__name__)
 
     # apply configuration
-    app.config.from_object("config")
-
-    # initialize extensions
-    migrate = Migrate()
-    moment = Moment()
-    csrf = CSRFProtect()
-
-    # register extensions
-    moment.init_app(app)
-    migrate.init_app(app, db)
-    db.init_app(app)
-    csrf.init_app(app)
+    app.config.from_object(config_path)
+    register_extensions(app)
+    register_blueprints(app)
+    register_errorhandlers(app)
 
     if not app.debug:
         file_handler = FileHandler("error.log")
@@ -49,31 +41,50 @@ def create_app():
     return app
 
 
-app = create_app()
+def register_extensions(app):
+    """Register Flask extensions."""
+    # initialize extensions
+    migrate = Migrate()
+    moment = Moment()
+    csrf = CSRFProtect()
+
+    # register extensions
+    moment.init_app(app)
+    migrate.init_app(app, db)
+    db.init_app(app)
+    csrf.init_app(app)
+    app.jinja_env.filters["datetime"] = format_datetime
+
 
 # ----------------------------------------------------------------------------#
-# Controllers.
+# Controllers
 # ----------------------------------------------------------------------------#
 
 
-@app.route("/")
-def index():
-    return render_template("pages/home.html")
+def register_blueprints(app):
+    """Register Flask blueprints."""
+
+    def index():
+        return render_template("pages/home.html")
+
+    app.add_url_rule("/", "index", view_func=index)
+    app.register_blueprint(venues_views, url_prefix="/venues")
+    app.register_blueprint(shows_views, url_prefix="/shows")
+    app.register_blueprint(artists_views, url_prefix="/artists")
 
 
-@app.errorhandler(404)
-def not_found_error(error):
-    return render_template("errors/404.html"), 404
+def register_errorhandlers(app):
+    """Register error handlers."""
 
+    def not_found_error(error):
+        return render_template("errors/404.html"), 404
 
-@app.errorhandler(500)
-def server_error(error):
-    return render_template("errors/500.html"), 500
+    def server_error(error):
+        return render_template("errors/500.html"), 500
 
+    app.errorhandler(404)(not_found_error)
+    app.errorhandler(500)(server_error)
 
-app.register_blueprint(venues_views, url_prefix="/venues")
-app.register_blueprint(shows_views, url_prefix="/shows")
-app.register_blueprint(artists_views, url_prefix="/artists")
 
 # ----------------------------------------------------------------------------#
 # Filters.
@@ -87,13 +98,3 @@ def format_datetime(value, format="medium"):
     elif format == "medium":
         format = "EE MM, dd, y h:mma"
     return babel.dates.format_datetime(date, format)
-
-
-app.jinja_env.filters["datetime"] = format_datetime
-
-# ----------------------------------------------------------------------------#
-# Launch.
-# ----------------------------------------------------------------------------#
-
-if __name__ == "__main__":
-    app.run(port=8080)

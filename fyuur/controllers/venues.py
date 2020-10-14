@@ -4,12 +4,12 @@ from flask import abort, flash, jsonify, redirect, render_template, request, url
 from flask.blueprints import Blueprint
 from sqlalchemy.exc import IntegrityError
 
-from src.forms import VenueForm
-from src.models import db
-from src.models.contact_info import ContactInfo
-from src.models.location import City
-from src.models.venues import Venue
-from src.utils import flash_error, parse_errors
+from fyuur.forms import VenueForm
+from fyuur.models import db
+from fyuur.models.contact_info import ContactInfo
+from fyuur.models.location import City
+from fyuur.models.venues import Venue
+from fyuur.utils import flash_error, parse_errors
 
 logger = logging.getLogger(__name__)
 venues_views = Blueprint("venues", __name__)
@@ -52,15 +52,65 @@ def search_venues():
 def edit_venue(venue_id):
     venue = Venue.query.get_or_404(venue_id)
     form = VenueForm(obj=venue)
+    form.city.data = venue.city.name
     return render_template("forms/edit_venue.html", form=form, venue=venue)
 
 
 # Form SUBMIT
 @venues_views.route("/<int:venue_id>/edit", methods=["POST"])
 def edit_venue_submission(venue_id):
-    # TODO: take values from the form submitted, and update existing
-    # venue record with ID <venue_id> using the new attributes
-    return redirect(url_for("venues.show_venue", venue_id=venue_id))
+    venue = Venue.query.get_or_404(venue_id)
+    form = VenueForm(request.form)
+    errors = None
+
+    if not form.validate():
+        errors = parse_errors(form.errors)
+        flash_error(errors)
+        return render_template("forms/edit_venue.html", form=form, venue=venue)
+
+    try:
+        # create City object
+        city_name, state = form.city.data, form.state.data
+        city_name = city_name.strip().capitalize()
+
+        # update city if changed
+        if city_name != venue.city.name:
+            city = City.query.filter_by(name=city_name).one_or_none()
+            if not city:
+                city = City(name=city_name, state=state)
+                db.session.add(city)
+            venue.city = city
+
+        # create Contact Information object
+        contact_info = venue.contact_info
+        contact_info.phone = form.contact_info.phone.data
+        contact_info.image_link = form.contact_info.image_link.data
+        contact_info.website = form.contact_info.website.data
+        contact_info.facebook_link = form.contact_info.facebook_link.data
+        db.session.add(contact_info)
+
+        # finally create Venue object
+        venue.genres = form.genres.data
+        venue.name = form.address.data.strip()
+        venue.address = form.address.data.strip()
+        db.session.add(venue)
+        db.session.commit()
+
+        flash(f"Venue {venue.name} was successfully listed!")
+    except IntegrityError as e:
+        logger.error(e)
+        db.session.rollback()
+        errors = True
+    finally:
+        db.session.close()
+
+    if errors:
+        form = VenueForm(request.form)
+        flash_error(
+            f"An error occurred. Venue {request.form.get('name', '')} could not be listed"
+        )
+        return render_template("forms/edit_venue.html", form=form, venue=venue)
+    return redirect(url_for("venues.venues_detail", venue_id=venue_id))
 
 
 #  CREATE -------------------------------------------------
@@ -94,7 +144,7 @@ def create_venue_submission():
 
         # create Contact Information object
         contact_info = ContactInfo(
-            phone=form.contact_info.phone.data.international,
+            phone=form.contact_info.phone.data,
             image_link=form.contact_info.image_link.data,
             website=form.contact_info.website.data,
             facebook_link=form.contact_info.facebook_link.data,
@@ -118,7 +168,7 @@ def create_venue_submission():
 
         flash(f"Venue {name} was successfully listed!")
     except IntegrityError as e:
-        print(e)
+        logger.error(e)
         db.session.rollback()
         errors = True
     finally:

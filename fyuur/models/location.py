@@ -1,4 +1,4 @@
-from src.models import PkModelMixin, db
+from fyuur.models import PkModelMixin, db
 
 
 class State(PkModelMixin, db.Model):

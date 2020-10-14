@@ -2,28 +2,29 @@ import datetime
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from src.models import PkModelMixin, db
-from src.models.contact_info import ContactInfo
-from src.models.genres import Genres, genre_artist_assoc
-from src.models.location import City
-from src.models.shows import Show
+from fyuur.models import PkModelMixin, db
+from fyuur.models.contact_info import ContactInfo
+from fyuur.models.genres import Genres, genre_venue_assoc
+from fyuur.models.location import City
+from fyuur.models.shows import Show
 
 
-class Artist(PkModelMixin, db.Model):
-    __tablename__ = "artists"
+class Venue(PkModelMixin, db.Model):
+    __tablename__ = "venues"
 
     name = db.Column(db.String)
+    address = db.Column(db.String(120))
 
-    genres = db.relationship(Genres, secondary=genre_artist_assoc)
+    genres = db.relationship(Genres, secondary=genre_venue_assoc)
 
-    seeking_venue = db.Column(db.Boolean, nullable=False, default=False)
+    seeking_talent = db.Column(db.Boolean, nullable=False, default=False)
     seeking_description = db.Column(db.String, nullable=True)
 
-    # MANY artist has ONE city
+    # MANY venues has ONE city
     city_id = db.Column(db.Integer, db.ForeignKey("cities.id"), nullable=False)
-    city = db.relationship(City, back_populates="artists")
+    city = db.relationship(City, back_populates="venues")
 
-    # ONE artist has ONE contact info
+    # ONE venues has ONE contact info
     contact_info_id = db.Column(
         db.Integer, db.ForeignKey("contact_info.id"), nullable=False, unique=True
     )
@@ -31,36 +32,36 @@ class Artist(PkModelMixin, db.Model):
         ContactInfo, uselist=False, cascade="all, delete-orphan", single_parent=True
     )
 
-    # ONE artist has MANY shows
-    shows = db.relationship(Show, back_populates="artist", cascade="all, delete-orphan")
+    # ONE venue has MANY shows
+    shows = db.relationship(Show, back_populates="venue", cascade="all, delete-orphan")
 
     def __repr__(self):
-        return f"<Artist name:{self.name}>"
+        return f"<Venue name:{self.name}>"
 
     @hybrid_property
     def upcoming_shows(self):
         today = datetime.date.today()
         return Show.query.filter(
-            Show.artist_id == self.id, Show.start_time >= today
+            Show.venue_id == self.id, Show.start_time >= today
         ).all()
 
     @hybrid_property
     def upcoming_shows_count(self):
         today = datetime.date.today()
         return Show.query.filter(
-            Show.artist_id == self.id, Show.start_time >= today
+            Show.venue_id == self.id, Show.start_time >= today
         ).count()
 
     @hybrid_property
     def past_shows(self):
         today = datetime.date.today()
         return Show.query.filter(
-            Show.artist_id == self.id, Show.start_time < today
+            Show.venue_id == self.id, Show.start_time < today
         ).all()
 
     @hybrid_property
     def past_shows_count(self):
         today = datetime.date.today()
         return Show.query.filter(
-            Show.artist_id == self.id, Show.start_time < today
+            Show.venue_id == self.id, Show.start_time < today
         ).count()

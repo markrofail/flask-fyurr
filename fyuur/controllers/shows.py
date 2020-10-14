@@ -3,9 +3,9 @@ import logging
 from flask import Blueprint, abort, flash, render_template, request
 from sqlalchemy.exc import IntegrityError
 
-from src.forms import ShowForm
-from src.models import db
-from src.models.shows import Show
+from fyuur.forms import ShowForm
+from fyuur.models import db
+from fyuur.models.shows import Show
 
 logger = logging.getLogger(__name__)
 shows_views = Blueprint("shows", __name__)

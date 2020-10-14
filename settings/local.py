@@ -14,7 +14,7 @@ SQLALCHEMY_DATABASE_URI = (
         dialect="postgresql",
         username="postgres",
         password="udacitydemo",
-        host="localhost",
+        host="database",
         port=5432,
         db_name="udacity_project",
     )
