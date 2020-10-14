@@ -1,8 +1,9 @@
 from unittest import TestCase
 
-from app import create_app as init_app
-from app import db
 from flask_fixtures import FixturesMixin
+
+from fyuur import create_app as init_app
+from fyuur import db
 
 
 class FlaskTestCase(TestCase, FixturesMixin):

@@ -53,3 +53,25 @@ class TestVenues(FlaskTestCase):
         """
         Test Venue Search: test that all matching venues are listed in /venues/search
         """
+
+        # search for Hop should return "The Musical Hop".
+        response = self.client.post(
+            url_for("venues.search_venues"), data=dict(search_term="Hop")
+        )
+        response_data = _decode_response(response)
+        self.assertIn("The Musical Hop", response_data)
+
+        # should be case insensitive
+        response = self.client.post(
+            url_for("venues.search_venues"), data=dict(search_term="hOP")
+        )
+        response_data = _decode_response(response)
+        self.assertIn("The Musical Hop", response_data)
+
+        # search for "Music" should return "The Musical Hop" and "Park Square Live Music & Coffee"
+        response = self.client.post(
+            url_for("venues.search_venues"), data=dict(search_term="Music")
+        )
+        response_data = _decode_response(response)
+        self.assertIn("The Musical Hop", response_data)
+        self.assertIn("Park Square Live Music & Coffee", response_data)
