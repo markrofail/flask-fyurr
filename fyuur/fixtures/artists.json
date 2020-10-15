@@ -3,21 +3,21 @@
       "table":"contact_info",
       "records":[
          {
-            "id":1,
+            "id":99,
             "phone":"326-123-5000",
             "website":"https://www.gunsnpetalsband.com",
             "facebook_link":"https://www.facebook.com/GunsNPetals",
             "image_link":"https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80"
          },
          {
-            "id":2,
+            "id":100,
             "phone":"300-400-5000",
             "website":null,
             "facebook_link":"https://www.facebook.com/mattquevedo923251523",
             "image_link":"https://images.unsplash.com/photo-1495223153807-b916f75de8c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
          },
          {
-            "id":3,
+            "id":101,
             "phone":"432-325-5432",
             "website":null,
             "facebook_link":"https://www.facebook.com/WildSaxUK",
@@ -29,79 +29,28 @@
       "table":"artists",
       "records":[
          {
-            "id":4,
+            "id":99,
             "name":"Guns N Petals",
-            "city_id":1,
-            "contact_info_id":1,
+            "city_id":99,
+            "contact_info_id":99,
             "seeking_venue":true,
-            "seeking_description":"Looking for shows to perform at in the San Francisco Bay Area!",
-            "past_shows":[
-               {
-                  "venue_id":1,
-                  "venue_name":"The Musical Hop",
-                  "venue_image_link":"https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60",
-                  "start_time":"2019-05-21T21:30:00.000Z"
-               }
-            ],
-            "upcoming_shows":[
-
-            ],
-            "past_shows_count":1,
-            "upcoming_shows_count":0
+            "seeking_description":"Looking for shows to perform at in the San Francisco Bay Area!"
          },
          {
-            "id":5,
+            "id":100,
             "name":"Matt Quevedo",
-            "city_id":2,
-            "contact_info_id":2,
+            "city_id":100,
+            "contact_info_id":100,
             "seeking_venue":false,
-            "seeking_description":null,
-            "past_shows":[
-               {
-                  "venue_id":3,
-                  "venue_name":"Park Square Live Music & Coffee",
-                  "venue_image_link":"https://images.unsplash.com/photo-1485686531765-ba63b07845a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=747&q=80",
-                  "start_time":"2019-06-15T23:00:00.000Z"
-               }
-            ],
-            "upcoming_shows":[
-
-            ],
-            "past_shows_count":1,
-            "upcoming_shows_count":0
+            "seeking_description":null
          },
          {
-            "id":6,
+            "id":101,
             "name":"The Wild Sax Band",
-            "city_id":1,
-            "contact_info_id":3,
+            "city_id":99,
+            "contact_info_id":101,
             "seeking_venue":false,
-            "seeking_description":null,
-            "past_shows":[
-
-            ],
-            "upcoming_shows":[
-               {
-                  "venue_id":3,
-                  "venue_name":"Park Square Live Music & Coffee",
-                  "venue_image_link":"https://images.unsplash.com/photo-1485686531765-ba63b07845a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=747&q=80",
-                  "start_time":"2035-04-01T20:00:00.000Z"
-               },
-               {
-                  "venue_id":3,
-                  "venue_name":"Park Square Live Music & Coffee",
-                  "venue_image_link":"https://images.unsplash.com/photo-1485686531765-ba63b07845a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=747&q=80",
-                  "start_time":"2035-04-08T20:00:00.000Z"
-               },
-               {
-                  "venue_id":3,
-                  "venue_name":"Park Square Live Music & Coffee",
-                  "venue_image_link":"https://images.unsplash.com/photo-1485686531765-ba63b07845a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=747&q=80",
-                  "start_time":"2035-04-15T20:00:00.000Z"
-               }
-            ],
-            "past_shows_count":0,
-            "upcoming_shows_count":3
+            "seeking_description":null
          }
       ]
    },
@@ -109,19 +58,19 @@
       "table":"genre_artist_assoc",
       "records":[
          {
-            "artist_id":4,
+            "artist_id":99,
             "genre_id":17
          },
          {
-            "artist_id":5,
+            "artist_id":100,
             "genre_id":11
          },
          {
-            "artist_id":6,
+            "artist_id":101,
             "genre_id":11
          },
          {
-            "artist_id":6,
+            "artist_id":101,
             "genre_id":3
          }
       ]

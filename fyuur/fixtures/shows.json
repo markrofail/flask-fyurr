@@ -3,28 +3,33 @@
        "table":"shows",
        "records":[
           {
-             "venue_id":1,
-             "artist_id":4,
+             "id": 99,
+             "venue_id":199,
+             "artist_id":99,
              "start_time":"2019-05-21T21:30:00.000Z"
           },
           {
-             "venue_id":3,
-             "artist_id":5,
+             "id": 100,
+             "venue_id":201,
+             "artist_id":100,
              "start_time":"2019-06-15T23:00:00.000Z"
           },
           {
-             "venue_id":3,
-             "artist_id":6,
+             "id": 101,
+             "venue_id":201,
+             "artist_id":101,
              "start_time":"2035-04-01T20:00:00.000Z"
           },
           {
-             "venue_id":3,
-             "artist_id":6,
+             "id": 102,
+             "venue_id":201,
+             "artist_id":101,
              "start_time":"2035-04-08T20:00:00.000Z"
           },
           {
-             "venue_id":3,
-             "artist_id":6,
+             "id": 103,
+             "venue_id":201,
+             "artist_id":101,
              "start_time":"2035-04-15T20:00:00.000Z"
           }
        ]

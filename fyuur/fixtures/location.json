@@ -212,12 +212,12 @@
       "table":"cities",
       "records":[
          {
-            "id":1,
+            "id":99,
             "name":"San Francisco",
             "state_id":5
          },
          {
-            "id":2,
+            "id":100,
             "name":"New York",
             "state_id":27
          }
