@@ -91,12 +91,12 @@ def edit_venue_submission(venue_id):
 
         # finally create Venue object
         venue.genres = form.genres.data
-        venue.name = form.address.data.strip()
+        venue.name = form.name.data.strip()
         venue.address = form.address.data.strip()
         db.session.add(venue)
         db.session.commit()
 
-        flash(f"Venue {venue.name} was successfully listed!")
+        flash(f"Venue {venue.name} was successfully updated!")
     except IntegrityError as e:
         logger.error(e)
         db.session.rollback()

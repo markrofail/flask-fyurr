@@ -52,7 +52,12 @@ def register_extensions(app):
     moment.init_app(app)
     migrate.init_app(app, db)
     db.init_app(app)
+
     csrf.init_app(app)
+    csrf.exempt("fyuur.controllers.venues.search_venues")
+    csrf.exempt("fyuur.controllers.venues.delete_venue")
+    csrf.exempt("fyuur.controllers.artists.search_artists")
+
     app.jinja_env.filters["datetime"] = format_datetime
 
 

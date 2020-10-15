@@ -1,11 +1,12 @@
 import logging
 
-from flask import Blueprint, abort, flash, render_template, request
+from flask import Blueprint, flash, render_template, request
 from sqlalchemy.exc import IntegrityError
 
 from fyuur.forms import ShowForm
 from fyuur.models import db
 from fyuur.models.shows import Show
+from fyuur.utils import flash_error, parse_errors
 
 logger = logging.getLogger(__name__)
 shows_views = Blueprint("shows", __name__)
@@ -29,12 +30,19 @@ def create_shows():
 # Form SUBMIT
 @shows_views.route("/create", methods=["POST"])
 def create_show_submission():
+    form = ShowForm(request.form)
     error = False
+
+    if not form.validate():
+        errors = parse_errors(form.errors)
+        flash_error(errors)
+        return render_template("forms/new_show.html", form=form)
+
     try:
         show = Show(
-            start_time=request.form.get("start_time"),
-            venue_id=request.form.get("venue_id"),
-            artist_id=request.form.get("artist_id"),
+            start_time=form.start_time.data,
+            venue_id=form.venue_id.data,
+            artist_id=form.artist_id.data,
         )
         db.session.add(show)
         db.session.commit()
@@ -45,8 +53,8 @@ def create_show_submission():
     finally:
         db.session.close()
     if error:
-        flash("An error occurred. Show could not be listed.")
-        abort(500)
+        flash_error("An error occurred. Show could not be listed.")
+        return render_template("forms/new_show.html", form=form)
     else:
         flash("Show was successfully listed!")
         return render_template("pages/home.html")

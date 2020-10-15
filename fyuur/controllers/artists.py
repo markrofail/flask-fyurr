@@ -1,3 +1,5 @@
+import logging
+
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from sqlalchemy.exc import IntegrityError
 
@@ -9,6 +11,7 @@ from fyuur.models.location import City
 from fyuur.utils import flash_error, parse_errors
 
 artists_views = Blueprint("artists", __name__)
+logger = logging.getLogger(__name__)
 
 
 # READ ----------------------------------------------------
@@ -48,6 +51,7 @@ def search_artists():
 def edit_artist(artist_id):
     artist = Artist.query.get_or_404(artist_id)
     form = ArtistForm(obj=artist)
+    form.city.data = artist.city.name
     return render_template("forms/edit_artist.html", form=form, artist=artist)
 
 
@@ -85,11 +89,11 @@ def edit_artist_submission(artist_id):
         db.session.add(contact_info)
 
         artist.genres = form.genres.data
-        artist.name = form.address.data.strip()
+        artist.name = form.name.data.strip()
         db.session.add(artist)
         db.session.commit()
 
-        flash(f"Artist {name} was successfully listed!")
+        flash(f"Artist {artist.name} was successfully updated!")
     except IntegrityError as e:
         logger.error(e)
         db.session.rollback()
