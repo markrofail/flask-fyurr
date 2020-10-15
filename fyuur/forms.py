@@ -1,18 +1,11 @@
+import re
 from datetime import datetime
 from urllib.parse import urlparse
 
-import phonenumbers
 from flask_wtf import FlaskForm
 from wtforms import DateTimeField, FormField, StringField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
-from wtforms.validators import (
-    URL,
-    DataRequired,
-    StopValidation,
-    ValidationError,
-    optional,
-)
-from wtforms_alchemy import PhoneNumberField
+from wtforms.validators import URL, DataRequired, ValidationError, optional
 
 from fyuur.models import db
 from fyuur.models.genres import Genres
@@ -51,10 +44,8 @@ class ContactInfoForm(FlaskForm):
 
     def validate_phone(self, phone):
         if phone.data:
-            parsed_phone = phonenumbers.parse(phone.data, "US")
-            print(phonenumbers.is_valid_number(parsed_phone))
-            if not phonenumbers.is_valid_number(parsed_phone):
-                raise ValidationError("Invalid phone number")
+            reg = re.compile(r"\d{3}-\d{3}-\d{4}")
+            assert reg.match(phone.data)
 
     phone = StringField("phone", validators=[DataRequired(), validate_phone])
     image_link = StringField("image_link")
