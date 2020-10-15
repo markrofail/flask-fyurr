@@ -6,15 +6,18 @@
 <ul class="items">
 	{% for venue in city.venues %}
 	<li class="venue-list-wrapper">
-			<a href="{{url_for('venues.venues_detail', venue_id=venue.id)}}">
-				<div class="item">
-					<i class="fas fa-music"></i>
-					<h5>{{ venue.name }}</h5>
-				</div>
-			</a>
-			<button class="btn btn-danger venue-list-delete" data-id="{{ venue.id }}">
-				<i class="fas fa-trash"></i>
-			</button>
+		<div style="display: none;">
+			{{ venue.id }}
+		</div>
+		<a href="{{url_for('venues.venues_detail', venue_id=venue.id)}}">
+			<div class="item">
+				<i class="fas fa-music"></i>
+				<h5>{{ venue.name }}</h5>
+			</div>
+		</a>
+		<button class="btn btn-danger venue-list-delete" data-id="{{ venue.id }}">
+			<i class="fas fa-trash"></i>
+		</button>
 	</li>
 	{% endfor %}
 </ul>
@@ -27,7 +30,7 @@
 		console.log(venueId);
 		fetch(`/venues/${venueId}`, { method: 'DELETE' })
 			.then(function (res) {
-				if(res.status == 200){
+				if (res.status == 200) {
 					// redirect to homepage
 					window.location.href = window.location.origin;
 				}
