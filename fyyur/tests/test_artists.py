@@ -1,6 +1,6 @@
 from flask import url_for
 
-from fyuur.models.artists import Artist
+from fyyur.models.artists import Artist
 
 from .conftest import FlaskTestCase, decode_response
 
@@ -8,7 +8,7 @@ from .conftest import FlaskTestCase, decode_response
 class TestArtists(FlaskTestCase):
     def test_list(self):
         """
-        Test Artist List: test that all artists are listed in /artists/
+        Artist List: test that all artists are listed in /artists/
         """
         artists = Artist.query.all()
 
@@ -20,7 +20,7 @@ class TestArtists(FlaskTestCase):
 
     def test_detail(self):
         """
-        Test Artist Detail: test that all artist details are listed in /artists/<artist_id>
+        Artist Detail: test that all artist details are listed in /artists/<artist_id>
         """
         response = self.client.get(url_for("artists.artists_detail", artist_id=99))
         response_data = decode_response(response)
@@ -34,7 +34,7 @@ class TestArtists(FlaskTestCase):
 
     def test_search(self):
         """
-        Test Artist Search: test that all matching artists are listed in /artist/search
+        Artist Search: test that all matching artists are listed in /artist/search
         """
 
         # search for band should return "The Wild Sax Band".
@@ -51,7 +51,8 @@ class TestArtists(FlaskTestCase):
         response_data = decode_response(response)
         self.assertIn("The Wild Sax Band", response_data)
 
-        # search for "A" should return "Guns N Petals", "Matt Quevado", and "The Wild Sax Band".
+        # search for "A" should return "Guns N Petals", "Matt Quevado",
+        # and "The Wild Sax Band".
         response = self.client.post(
             url_for("artists.search_artists"), data=dict(search_term="A")
         )
@@ -62,7 +63,7 @@ class TestArtists(FlaskTestCase):
 
     def test_edit(self):
         """
-        Test Artist Edit: test that an artist can be edited /artist/<artist_id>/edit
+        Artist Edit: test that an artist can be edited /artist/<artist_id>/edit
         """
         artist = Artist.query.get(99)
 
@@ -89,7 +90,7 @@ class TestArtists(FlaskTestCase):
 
     def test_create(self):
         """
-        Test Artist Create: test that an artist can be created /artists/create
+        Artist Create: test that an artist can be created /artists/create
         """
 
         payload = {

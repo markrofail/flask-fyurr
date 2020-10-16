@@ -7,9 +7,9 @@ from wtforms import DateTimeField, FormField, StringField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from wtforms.validators import URL, DataRequired, ValidationError, optional
 
-from fyuur.models import db
-from fyuur.models.genres import Genres
-from fyuur.models.location import State
+from fyyur.models import db
+from fyyur.models.genres import Genres
+from fyyur.models.location import State
 
 
 def state_choices():

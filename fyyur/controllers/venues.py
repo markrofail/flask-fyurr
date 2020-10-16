@@ -4,12 +4,12 @@ from flask import abort, flash, jsonify, redirect, render_template, request, url
 from flask.blueprints import Blueprint
 from sqlalchemy.exc import IntegrityError
 
-from fyuur.forms import VenueForm
-from fyuur.models import db
-from fyuur.models.contact_info import ContactInfo
-from fyuur.models.location import City
-from fyuur.models.venues import Venue
-from fyuur.utils import flash_error, parse_errors
+from fyyur.forms import VenueForm
+from fyyur.models import db
+from fyyur.models.contact_info import ContactInfo
+from fyyur.models.location import City
+from fyyur.models.venues import Venue
+from fyyur.utils import flash_error, parse_errors
 
 logger = logging.getLogger(__name__)
 venues_views = Blueprint("venues", __name__)
@@ -106,9 +106,8 @@ def edit_venue_submission(venue_id):
 
     if errors:
         form = VenueForm(request.form)
-        flash_error(
-            f"An error occurred. Venue {request.form.get('name', '')} could not be listed"
-        )
+        venue_name = request.form.get("name", "")
+        flash_error(f"An error occurred. Venue {venue_name} could not be listed")
         return render_template("forms/edit_venue.html", form=form, venue=venue)
     return redirect(url_for("venues.venues_detail", venue_id=venue_id))
 
@@ -176,9 +175,8 @@ def create_venue_submission():
 
     if errors:
         form = VenueForm(request.form)
-        flash_error(
-            f"An error occurred. Venue {request.form.get('name', '')} could not be listed"
-        )
+        venue_name = request.form.get("name", "")
+        flash_error(f"An error occurred. Venue {venue_name} could not be listed")
         return render_template("forms/new_venue.html", form=form)
     return redirect(url_for("index"))
 

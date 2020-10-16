@@ -1,6 +1,6 @@
 <br />
 <p align="center">
-    <img src="fyuur/static/ico/favicon.png" alt="Logo" width="80" height="80">
+    <img src="fyyur/static/ico/favicon.png" alt="Logo" width="80" height="80">
   <h3 align="center">Fyyur</h3>
   <p align="center">
     Project 1 for Fullstack Nanodegree @ Udacity
@@ -168,7 +168,7 @@ you should see the following
 ```
 ❯ make test
 docker-compose run --service-ports --rm python nosetests -sv
-Starting fyuur_database_1 ... done
+Starting fyyur_database_1 ... done
 Test Artist Create: test that an artist can be created /artists/create ... ok
 Test Artist Detail: test that all artist details are listed in /artists/<artist_id> ... ok
 Test Artist Edit: test that an artist can be edited /artist/<artist_id>/edit ... ok

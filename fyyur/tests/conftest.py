@@ -3,8 +3,8 @@ from unittest import TestCase
 
 from flask_fixtures import FixturesMixin
 
-from fyuur import create_app as init_app
-from fyuur import db
+from fyyur import create_app as init_app
+from fyyur import db
 
 
 def decode_response(response):
@@ -26,9 +26,9 @@ class FlaskTestCase(TestCase, FixturesMixin):
         db.drop_all()
 
     fixtures = [
-        "fyuur/fixtures/location.json",
-        "fyuur/fixtures/genres.json",
-        "fyuur/fixtures/artists.json",
-        "fyuur/fixtures/venues.json",
-        "fyuur/fixtures/shows.json",
+        "fyyur/fixtures/location.json",
+        "fyyur/fixtures/genres.json",
+        "fyyur/fixtures/artists.json",
+        "fyyur/fixtures/venues.json",
+        "fyyur/fixtures/shows.json",
     ]

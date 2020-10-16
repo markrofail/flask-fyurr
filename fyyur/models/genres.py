@@ -1,4 +1,4 @@
-from fyuur.models import PkModelMixin, db
+from fyyur.models import PkModelMixin, db
 
 
 class Genres(PkModelMixin, db.Model):

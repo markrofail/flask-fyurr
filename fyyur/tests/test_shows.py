@@ -2,7 +2,7 @@ import datetime
 
 from flask import url_for
 
-from fyuur.models.shows import Show
+from fyyur.models.shows import Show
 
 from .conftest import FlaskTestCase, decode_response
 

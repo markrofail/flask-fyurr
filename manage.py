@@ -5,7 +5,7 @@ from flask_migrate import MigrateCommand
 from flask_script import Manager
 from sqlalchemy.exc import IntegrityError
 
-from fyuur import create_app, db
+from fyyur import create_app, db
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ def loan_fixtures(fixtures):
     for fixture in fixtures:
         try:
             load_fixtures_from_file(
-                db=db, fixture_filename=f"fyuur/fixtures/{fixture}.json"
+                db=db, fixture_filename=f"fyyur/fixtures/{fixture}.json"
             )
         except IntegrityError:
             pass

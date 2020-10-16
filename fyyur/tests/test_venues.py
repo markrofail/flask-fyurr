@@ -1,6 +1,6 @@
 from flask import url_for
 
-from fyuur.models.venues import Venue
+from fyyur.models.venues import Venue
 
 from .conftest import FlaskTestCase, decode_response
 
@@ -52,7 +52,8 @@ class TestVenues(FlaskTestCase):
         response_data = decode_response(response)
         self.assertIn("The Musical Hop", response_data)
 
-        # search for "Music" should return "The Musical Hop" and "Park Square Live Music & Coffee"
+        # search for "Music" should return "The Musical Hop"
+        # and "Park Square Live Music & Coffee"
         response = self.client.post(
             url_for("venues.search_venues"), data=dict(search_term="Music")
         )

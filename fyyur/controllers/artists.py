@@ -3,12 +3,12 @@ import logging
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from sqlalchemy.exc import IntegrityError
 
-from fyuur.forms import ArtistForm
-from fyuur.models import db
-from fyuur.models.artists import Artist
-from fyuur.models.contact_info import ContactInfo
-from fyuur.models.location import City
-from fyuur.utils import flash_error, parse_errors
+from fyyur.forms import ArtistForm
+from fyyur.models import db
+from fyyur.models.artists import Artist
+from fyyur.models.contact_info import ContactInfo
+from fyyur.models.location import City
+from fyyur.utils import flash_error, parse_errors
 
 artists_views = Blueprint("artists", __name__)
 logger = logging.getLogger(__name__)
@@ -103,9 +103,8 @@ def edit_artist_submission(artist_id):
 
     if errors:
         form = ArtistForm(request.form)
-        flash_error(
-            f"An error occurred. Artist {request.form.get('name', '')} could not be listed"
-        )
+        artist_name = request.form.get("name", "")
+        flash_error(f"An error occurred. Artist {artist_name} could not be listed")
         return render_template("forms/edit_artist.html", form=form, artist=artist)
     return redirect(url_for("artists.artists_detail", artist_id=artist_id))
 
@@ -171,8 +170,7 @@ def create_artist_submission():
 
     if errors:
         form = ArtistForm(request.form)
-        flash_error(
-            f"An error occurred. Artist {request.form.get('name', '')} could not be listed"
-        )
+        artist_name = request.form.get("name", "")
+        flash_error(f"An error occurred. Artist {artist_name} could not be listed")
         return render_template("forms/new_artist.html", form=form)
     return redirect(url_for("index"))

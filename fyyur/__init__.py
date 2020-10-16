@@ -9,8 +9,8 @@ from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_wtf.csrf import CSRFProtect
 
-from fyuur.controllers import artists_views, shows_views, venues_views
-from fyuur.models import db
+from fyyur.controllers import artists_views, shows_views, venues_views
+from fyyur.models import db
 
 # ----------------------------------------------------------------------------#
 # App Config.
@@ -54,9 +54,9 @@ def register_extensions(app):
     db.init_app(app)
 
     csrf.init_app(app)
-    csrf.exempt("fyuur.controllers.venues.search_venues")
-    csrf.exempt("fyuur.controllers.venues.delete_venue")
-    csrf.exempt("fyuur.controllers.artists.search_artists")
+    csrf.exempt("fyyur.controllers.venues.search_venues")
+    csrf.exempt("fyyur.controllers.venues.delete_venue")
+    csrf.exempt("fyyur.controllers.artists.search_artists")
 
     app.jinja_env.filters["datetime"] = format_datetime
 
