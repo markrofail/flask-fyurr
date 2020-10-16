@@ -19,7 +19,11 @@
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
+    - [with docker](#with-docker)
+    - [without docker](#without-docker)
   - [Test](#test)
+    - [with docker](#with-docker-1)
+    - [without docker](#without-docker-1)
 
 ## About The Project
 
@@ -149,19 +153,46 @@ Follow [this guide](https://docs.docker.com/compose/install/) to learn how to in
 
 ### Installation
 
+#### with docker
+
 - just use the following command to get the application to start
 
 ```sh
  make
  ```
 
+#### without docker
+
+```sh
+cd path/to/the/project_dir
+
+pip install -r requirements-dev.txt
+
+python manage.py load_db location
+python manage.py load_db genres
+
+python manage.py run
+```
+
 ### Test
+
+#### with docker
 
 - just use the following command to run the unittests
 
 ```sh
  make test
  ```
+
+#### without docker
+
+```sh
+cd path/to/the/project_dir
+
+pip install -r requirements-dev.txt
+
+nosetests -sv
+```
 
 you should see the following
 
