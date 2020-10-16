@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
@@ -8,6 +9,7 @@ from fyyur.models import db
 from fyyur.models.artists import Artist
 from fyyur.models.contact_info import ContactInfo
 from fyyur.models.location import City
+from fyyur.models.shows import Show
 from fyyur.utils import flash_error, parse_errors
 
 artists_views = Blueprint("artists", __name__)
@@ -26,7 +28,29 @@ def artists_list():
 @artists_views.route("/<int:artist_id>")
 def artists_detail(artist_id):
     artist = Artist.query.get_or_404(artist_id)
-    return render_template("pages/show_artist.html", artist=artist)
+
+    upcoming_shows = (
+        db.session.query(Show)
+        .join(Artist)
+        .filter(Show.artist_id == artist_id, Show.start_time >= datetime.datetime.now())
+        .all()
+    )
+
+    past_shows = (
+        db.session.query(Show)
+        .join(Artist)
+        .filter(Show.artist_id == artist_id, Show.start_time < datetime.datetime.now())
+        .all()
+    )
+
+    shows_info = dict(
+        past_shows=past_shows,
+        upcoming_shows=upcoming_shows,
+        past_shows_count=len(past_shows),
+        upcoming_shows_count=len(upcoming_shows),
+    )
+
+    return render_template("pages/show_artist.html", artist=artist, **shows_info)
 
 
 #  SEARCH -------------------------------------------------

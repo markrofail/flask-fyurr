@@ -5,6 +5,7 @@ import babel
 import dateutil.parser
 from flask import Flask
 from flask.templating import render_template
+from flask_debugtoolbar import DebugToolbarExtension
 from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_wtf.csrf import CSRFProtect
@@ -47,11 +48,13 @@ def register_extensions(app):
     migrate = Migrate()
     moment = Moment()
     csrf = CSRFProtect()
+    toolbar = DebugToolbarExtension()
 
     # register extensions
     moment.init_app(app)
     migrate.init_app(app, db)
     db.init_app(app)
+    toolbar.init_app(app)
 
     csrf.init_app(app)
     csrf.exempt("fyyur.controllers.venues.search_venues")

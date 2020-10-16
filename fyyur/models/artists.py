@@ -1,7 +1,3 @@
-import datetime
-
-from sqlalchemy.ext.hybrid import hybrid_property
-
 from fyyur.models import PkModelMixin, db
 from fyyur.models.contact_info import ContactInfo
 from fyyur.models.genres import Genres, genre_artist_assoc
@@ -36,31 +32,3 @@ class Artist(PkModelMixin, db.Model):
 
     def __repr__(self):
         return f"<Artist name:{self.name}>"
-
-    @hybrid_property
-    def upcoming_shows(self):
-        today = datetime.date.today()
-        return Show.query.filter(
-            Show.artist_id == self.id, Show.start_time >= today
-        ).all()
-
-    @hybrid_property
-    def upcoming_shows_count(self):
-        today = datetime.date.today()
-        return Show.query.filter(
-            Show.artist_id == self.id, Show.start_time >= today
-        ).count()
-
-    @hybrid_property
-    def past_shows(self):
-        today = datetime.date.today()
-        return Show.query.filter(
-            Show.artist_id == self.id, Show.start_time < today
-        ).all()
-
-    @hybrid_property
-    def past_shows_count(self):
-        today = datetime.date.today()
-        return Show.query.filter(
-            Show.artist_id == self.id, Show.start_time < today
-        ).count()

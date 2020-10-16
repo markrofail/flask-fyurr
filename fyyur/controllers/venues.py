@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from flask import abort, flash, jsonify, redirect, render_template, request, url_for
@@ -8,6 +9,7 @@ from fyyur.forms import VenueForm
 from fyyur.models import db
 from fyyur.models.contact_info import ContactInfo
 from fyyur.models.location import City
+from fyyur.models.shows import Show
 from fyyur.models.venues import Venue
 from fyyur.utils import flash_error, parse_errors
 
@@ -27,7 +29,29 @@ def venues_list():
 @venues_views.route("/<int:venue_id>")
 def venues_detail(venue_id):
     venue = Venue.query.get_or_404(venue_id)
-    return render_template("pages/show_venue.html", venue=venue)
+
+    upcoming_shows = (
+        db.session.query(Show)
+        .join(Venue)
+        .filter(Show.venue_id == venue_id, Show.start_time >= datetime.datetime.now())
+        .all()
+    )
+
+    past_shows = (
+        db.session.query(Show)
+        .join(Venue)
+        .filter(Show.venue_id == venue_id, Show.start_time < datetime.datetime.now())
+        .all()
+    )
+
+    shows_info = dict(
+        past_shows=past_shows,
+        upcoming_shows=upcoming_shows,
+        past_shows_count=len(past_shows),
+        upcoming_shows_count=len(upcoming_shows),
+    )
+
+    return render_template("pages/show_venue.html", venue=venue, **shows_info)
 
 
 #  SEARCH -------------------------------------------------
