@@ -46,8 +46,8 @@ def create_show_submission():
         )
         db.session.add(show)
         db.session.commit()
-    except IntegrityError as e:
-        logger.error(e)
+    except IntegrityError as exec:
+        logger.error(exec)
         db.session.rollback()
         error = True
     finally:

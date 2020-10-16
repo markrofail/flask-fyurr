@@ -75,59 +75,34 @@ def search_artists():
 def edit_artist(artist_id):
     artist = Artist.query.get_or_404(artist_id)
     form = ArtistForm(obj=artist)
-    form.city.data = artist.city.name
     return render_template("forms/edit_artist.html", form=form, artist=artist)
 
 
 # Form SUBMIT
 @artists_views.route("/<int:artist_id>/edit", methods=["POST"])
 def edit_artist_submission(artist_id):
-    artist = Artist.query.get_or_404(artist_id)
     form = ArtistForm(request.form)
     errors = None
 
-    if not form.validate():
-        errors = parse_errors(form.errors)
-        flash_error(errors)
-        return render_template("forms/edit_artist.html", form=form, artist=artist)
+    if form.validate():
+        try:
+            artist = Artist.query.get_or_404(artist_id)
+            form.populate_obj(artist)
+            db.session.add(artist)
+            db.session.commit()
+            flash(f"Artist {artist.name} was successfully updated!")
+        except IntegrityError as exec:
+            logger.error(exec)
+            db.session.rollback()
+            errors = True
+        finally:
+            db.session.close()
 
-    try:
-        # create City object
-        city_name, state = form.city.data, form.state.data
-        city_name = city_name.strip().capitalize()
-
-        # update city if changed
-        if city_name != artist.city.name:
-            city = City.query.filter_by(name=city_name).one_or_none()
-            if not city:
-                city = City(name=city_name, state=state)
-                db.session.add(city)
-            artist.city = city
-
-        # create Contact Information object
-        contact_info = artist.contact_info
-        contact_info.phone = form.contact_info.phone.data
-        contact_info.image_link = form.contact_info.image_link.data
-        contact_info.website = form.contact_info.website.data
-        contact_info.facebook_link = form.contact_info.facebook_link.data
-        db.session.add(contact_info)
-
-        artist.genres = form.genres.data
-        artist.name = form.name.data.strip()
-        db.session.add(artist)
-        db.session.commit()
-
-        flash(f"Artist {artist.name} was successfully updated!")
-    except IntegrityError as e:
-        logger.error(e)
-        db.session.rollback()
-        errors = True
-    finally:
-        db.session.close()
-
-    if errors:
-        form = ArtistForm(request.form)
-        artist_name = request.form.get("name", "")
+    if form.errors or errors:
+        if form.errors:
+            flash_error(parse_errors(form.errors))
+        else:
+            artist_name = request.form.get("name", "")
         flash_error(f"An error occurred. Artist {artist_name} could not be listed")
         return render_template("forms/edit_artist.html", form=form, artist=artist)
     return redirect(url_for("artists.artists_detail", artist_id=artist_id))
@@ -146,55 +121,53 @@ def create_artist_submission():
     form = ArtistForm(request.form)
     errors = None
 
-    if not form.validate():
-        errors = parse_errors(form.errors)
-        flash_error(errors)
-        return render_template("forms/new_artist.html", form=form)
+    if form.validate():
+        try:
+            # create City object
+            city_name, state = form.city._fields["name"].data, form.city.state.data
+            city_name = city_name.strip().capitalize()
 
-    try:
-        # create City object
-        city_name, state = form.city.data, form.state.data
-        city_name = city_name.strip().capitalize()
+            # get or create
+            city = City.query.filter_by(name=city_name).one_or_none()
+            if not city:
+                city = City(name=city_name, state=state)
+                db.session.add(city)
 
-        # get or create
-        city = City.query.filter_by(name=city_name).one_or_none()
-        if not city:
-            city = City(name=city_name, state=state)
-            db.session.add(city)
+            # create Contact Information object
+            contact_info = ContactInfo(
+                phone=form.contact_info.phone.data,
+                image_link=form.contact_info.image_link.data,
+                website=form.contact_info.website.data,
+                facebook_link=form.contact_info.facebook_link.data,
+            )
+            db.session.add(contact_info)
 
-        # create Contact Information object
-        contact_info = ContactInfo(
-            phone=form.contact_info.phone.data,
-            image_link=form.contact_info.image_link.data,
-            website=form.contact_info.website.data,
-            facebook_link=form.contact_info.facebook_link.data,
-        )
-        db.session.add(contact_info)
+            # finally create Artist object
+            genres = form.genres.data
+            name = form.name.data.strip()
 
-        # finally create Artist object
-        genres = form.genres.data
-        name = form.name.data.strip()
+            artist = Artist(
+                name=name,
+                genres=genres,
+                city=city,
+                contact_info=contact_info,
+            )
+            db.session.add(artist)
+            db.session.commit()
 
-        artists = Artist(
-            name=name,
-            genres=genres,
-            city=city,
-            contact_info=contact_info,
-        )
-        db.session.add(artists)
-        db.session.commit()
+            flash(f"Artist {name} was successfully listed!")
+        except IntegrityError as exec:
+            logger.error(exec)
+            db.session.rollback()
+            errors = True
+        finally:
+            db.session.close()
 
-        flash(f"Artist {name} was successfully listed!")
-    except IntegrityError as e:
-        logger.error(e)
-        db.session.rollback()
-        errors = True
-    finally:
-        db.session.close()
-
-    if errors:
-        form = ArtistForm(request.form)
-        artist_name = request.form.get("name", "")
+    if form.errors or errors:
+        if form.errors:
+            flash_error(parse_errors(form.errors))
+        else:
+            artist_name = request.form.get("name", "")
         flash_error(f"An error occurred. Artist {artist_name} could not be listed")
-        return render_template("forms/new_artist.html", form=form)
+        return render_template("forms/edit_artist.html", form=form)
     return redirect(url_for("index"))

@@ -76,62 +76,35 @@ def search_venues():
 def edit_venue(venue_id):
     venue = Venue.query.get_or_404(venue_id)
     form = VenueForm(obj=venue)
-    form.city.data = venue.city.name
     return render_template("forms/edit_venue.html", form=form, venue=venue)
 
 
 # Form SUBMIT
 @venues_views.route("/<int:venue_id>/edit", methods=["POST"])
 def edit_venue_submission(venue_id):
-    venue = Venue.query.get_or_404(venue_id)
     form = VenueForm(request.form)
     errors = None
 
-    if not form.validate():
-        errors = parse_errors(form.errors)
-        flash_error(errors)
-        return render_template("forms/edit_venue.html", form=form, venue=venue)
+    if form.validate():
+        try:
+            venue = Venue.query.get_or_404(venue_id)
+            form.populate_obj(venue)
+            db.session.add(venue)
+            db.session.commit()
+            flash(f"Venue {venue.name} was successfully updated!")
+        except IntegrityError as exec:
+            logger.error(exec)
+            db.session.rollback()
+            errors = True
+        finally:
+            db.session.close()
 
-    try:
-        # create City object
-        city_name, state = form.city.data, form.state.data
-        city_name = city_name.strip().capitalize()
-
-        # update city if changed
-        if city_name != venue.city.name:
-            city = City.query.filter_by(name=city_name).one_or_none()
-            if not city:
-                city = City(name=city_name, state=state)
-                db.session.add(city)
-            venue.city = city
-
-        # create Contact Information object
-        contact_info = venue.contact_info
-        contact_info.phone = form.contact_info.phone.data
-        contact_info.image_link = form.contact_info.image_link.data
-        contact_info.website = form.contact_info.website.data
-        contact_info.facebook_link = form.contact_info.facebook_link.data
-        db.session.add(contact_info)
-
-        # finally create Venue object
-        venue.genres = form.genres.data
-        venue.name = form.name.data.strip()
-        venue.address = form.address.data.strip()
-        db.session.add(venue)
-        db.session.commit()
-
-        flash(f"Venue {venue.name} was successfully updated!")
-    except IntegrityError as e:
-        logger.error(e)
-        db.session.rollback()
-        errors = True
-    finally:
-        db.session.close()
-
-    if errors:
-        form = VenueForm(request.form)
-        venue_name = request.form.get("name", "")
-        flash_error(f"An error occurred. Venue {venue_name} could not be listed")
+    if form.errors or errors:
+        if form.errors:
+            flash_error(parse_errors(form.errors))
+        else:
+            venue_name = request.form.get("name", "")
+            flash_error(f"An error occurred. Venue {venue_name} could not be listed")
         return render_template("forms/edit_venue.html", form=form, venue=venue)
     return redirect(url_for("venues.venues_detail", venue_id=venue_id))
 
@@ -156,7 +129,7 @@ def create_venue_submission():
 
     try:
         # create City object
-        city_name, state = form.city.data, form.state.data
+        city_name, state = form.city._fields["name"].data, form.city.state.data
         city_name = city_name.strip().capitalize()
 
         # get or create
@@ -186,22 +159,25 @@ def create_venue_submission():
             city=city,
             contact_info=contact_info,
         )
+
         db.session.add(venue)
         db.session.commit()
 
         flash(f"Venue {name} was successfully listed!")
-    except IntegrityError as e:
-        logger.error(e)
+    except IntegrityError as exec:
+        logger.error(exec)
         db.session.rollback()
         errors = True
     finally:
         db.session.close()
 
-    if errors:
-        form = VenueForm(request.form)
-        venue_name = request.form.get("name", "")
-        flash_error(f"An error occurred. Venue {venue_name} could not be listed")
-        return render_template("forms/new_venue.html", form=form)
+    if form.errors or errors:
+        if form.errors:
+            flash_error(parse_errors(form.errors))
+        else:
+            venue_name = request.form.get("name", "")
+            flash_error(f"An error occurred. Venue {venue_name} could not be listed")
+        return render_template("forms/edit_venue.html", form=form)
     return redirect(url_for("index"))
 
 
@@ -213,8 +189,8 @@ def delete_venue(venue_id):
         venue = Venue.query.get_or_404(venue_id)
         db.session.delete(venue)
         db.session.commit()
-    except IntegrityError as e:
-        logger.error(e)
+    except IntegrityError as exec:
+        logger.error(exec)
         db.session.rollback()
         error = True
     finally:

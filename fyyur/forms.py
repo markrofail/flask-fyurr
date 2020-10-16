@@ -28,6 +28,16 @@ class ShowForm(FlaskForm):
     )
 
 
+class CityForm(FlaskForm):
+    name = StringField("name", validators=[DataRequired()])
+    state = QuerySelectField(
+        "state",
+        validators=[DataRequired()],
+        query_factory=state_choices,
+        get_label="name",
+    )
+
+
 class ContactInfoForm(FlaskForm):
     def validate_facebook(self, field):
         if field.data:
@@ -59,13 +69,7 @@ class VenueForm(FlaskForm):
     name = StringField("name", validators=[DataRequired()])
     address = StringField("address", validators=[DataRequired()])
 
-    city = StringField("city", validators=[DataRequired()])
-    state = QuerySelectField(
-        "state",
-        validators=[DataRequired()],
-        query_factory=state_choices,
-        get_label="name",
-    )
+    city = FormField(CityForm)
 
     genres = QuerySelectMultipleField(
         "genres",
@@ -80,13 +84,7 @@ class VenueForm(FlaskForm):
 class ArtistForm(FlaskForm):
     name = StringField("name", validators=[DataRequired()])
 
-    city = StringField("city", validators=[DataRequired()])
-    state = QuerySelectField(
-        "state",
-        validators=[DataRequired()],
-        query_factory=state_choices,
-        get_label="name",
-    )
+    city = FormField(CityForm)
 
     genres = QuerySelectMultipleField(
         "genres",
